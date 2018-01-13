@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
-
 
 public class Options extends Activity {
 
@@ -48,7 +46,7 @@ public class Options extends Activity {
 
     private void configureMenuButton(){
 
-        ImageButton backToMenu = (ImageButton) findViewById(R.id.backToMenu);
+        Button backToMenu = (Button) findViewById(R.id.backToMenu);
         backToMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
