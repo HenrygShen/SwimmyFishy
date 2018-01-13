@@ -1,1 +1,1 @@
-# SwimmyFishy 
+A game similar to flappy bird but underwater
