@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-
+import android.widget.ImageButton;
 
 
 public class Options extends Activity {
@@ -35,17 +35,25 @@ public class Options extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout( width,(int) (height*0.7));
+        getWindow().setLayout( (int)(width*0.88),(int) (height*0.7));
 
 
-        Button button = (Button) findViewById(R.id.btn);
-        button.setOnClickListener(new View.OnClickListener(){
+        configureInteractions();
+
+    }
+
+    private void configureInteractions(){
+        configureMenuButton();
+    }
+
+    private void configureMenuButton(){
+
+        ImageButton backToMenu = (ImageButton) findViewById(R.id.backToMenu);
+        backToMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 finish();
             }
         });
-
-
     }
 }

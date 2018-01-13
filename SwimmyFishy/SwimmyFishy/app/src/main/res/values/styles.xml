@@ -17,7 +17,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <color name = "transparent_blue_color">#880000ff</color>
+    <color name = "transparent_blue_color">#600000ff</color>
     <style name = "translucent_blue" parent = "android:Theme.Translucent">
         <item name = "android:windowBackground">@color/transparent_blue_color</item>
     </style>
