@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+
 
 
 public class Options extends Activity {
@@ -15,11 +17,16 @@ public class Options extends Activity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.options_window);
+        /* Set up the layout :
 
-        /* Hides the status bar */
+        Hide the status bar */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        /* Hide the title bar */
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        /* Set the layout */
+        setContentView(R.layout.options_window);
 
         DisplayMetrics dm  = new DisplayMetrics();
 
@@ -28,7 +35,7 @@ public class Options extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout(width/2,height/2);
+        getWindow().setLayout( width,(int) (height*0.7));
 
 
         Button button = (Button) findViewById(R.id.btn);

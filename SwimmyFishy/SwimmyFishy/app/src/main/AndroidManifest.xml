@@ -26,7 +26,8 @@
         </activity>
 
         <activity android:name=".Options"
-            android:theme="@style/AppTheme.OptionsPopUpTheme">
+
+            android:theme="@style/translucent_blue">
         </activity>
 
 

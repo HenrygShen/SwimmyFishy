@@ -17,9 +17,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.OptionsPopUpTheme" >
-        <item name = "android:windowIsTranslucent">true</item>
-        <item name = "android:windowCloseOnTouchOutside">true</item>
+    <color name = "transparent_blue_color">#880000ff</color>
+    <style name = "translucent_blue" parent = "android:Theme.Translucent">
+        <item name = "android:windowBackground">@color/transparent_blue_color</item>
     </style>
+
 
 </resources>
