@@ -1,1 +1,3 @@
 HS = 888
+SFX.volume = 100
+BGM.volume = 100

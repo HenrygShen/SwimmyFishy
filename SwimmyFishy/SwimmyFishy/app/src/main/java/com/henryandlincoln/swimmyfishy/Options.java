@@ -66,7 +66,6 @@ public class Options extends Activity {
         SeekBar soundFXSeekbar = (SeekBar) findViewById(R.id.soundFXSeekbar);
 
         try {
-            audioMananger  = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             soundFXSeekbar.setMax(audioMananger.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
             soundFXSeekbar.setProgress(audioMananger.getStreamVolume(AudioManager.STREAM_MUSIC));
 
@@ -98,6 +97,7 @@ public class Options extends Activity {
 
         Button backToMenu = (Button) findViewById(R.id.backToMenu);
         final MediaPlayer mp = MediaPlayer.create(this,R.raw.bubble_pop_1);
+
         backToMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
