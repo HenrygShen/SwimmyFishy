@@ -2,9 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,14 +11,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class Options extends Activity {
 
-    public static final String PREFS_NAME = "Settings";
-    public int sfxVolume;
+    private static final String PREFS_NAME = "Settings";
+    private static final int MAX_VOLUME = 100;
+    private int sfxVolume;
     private int bgmVolume;
 
     @Override
@@ -28,53 +24,48 @@ public class Options extends Activity {
 
         super.onCreate(savedInstanceState);
 
-        /* Set up the layout :
-
-        Hide the status bar */
+        /* Hide the status bar and title bar*/
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        /* Hide the title bar */
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        /* Set the layout */
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        /* Set up the layout : */
         setContentView(R.layout.options_window);
 
-        /* Grab the volumes passed through main activity */
+        /* Set up each volume level */
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME,0);
         sfxVolume = settings.getInt("sfxVolume",0);
         bgmVolume = settings.getInt("bgmVolume",0);
-        setUpScreen();
 
+        setUpScreen();
+        setUpControls();
     }
+
+    /* The view for this activity will not take up the full screen, this function view smaller than 100% */
     private void setUpScreen() {
 
         DisplayMetrics dm  = new DisplayMetrics();
-
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout( (int)(width*0.88),(int) (height*0.7));
-        configureInteractions();
+        getWindow().setLayout((int) (dm.widthPixels*0.88) ,(int) (dm.heightPixels*0.7));
     }
 
-    private void configureInteractions(){
-        configureMenuButton();
+    private void setUpControls(){
         configureBGMSeekBar();
         configureSoundFXSeekBar();
+        configureMenuButton();
     }
 
     private void configureBGMSeekBar(){
 
         final SeekBar bgmSeekBar = (SeekBar) findViewById(R.id.BGMSeekbar);
-        bgmSeekBar.setMax(100);
+        bgmSeekBar.setMax(MAX_VOLUME);
         bgmSeekBar.setProgress(bgmVolume);
 
         bgmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                /* Update the background music volume every time this SeekBar is updated */
                 bgmVolume = bgmSeekBar.getProgress();
+                /* Save the volume here in case the user escapes this activity using the phone's default back button */
+                getApplicationContext().getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).edit().putInt("bgmVolume",bgmVolume).apply();
             }
 
             @Override
@@ -93,13 +84,16 @@ public class Options extends Activity {
     private void configureSoundFXSeekBar(){
 
         final SeekBar soundFXSeekBar = (SeekBar) findViewById(R.id.soundFXSeekbar);
-        soundFXSeekBar.setMax(100);
+        soundFXSeekBar.setMax(MAX_VOLUME);
         soundFXSeekBar.setProgress(sfxVolume);
 
         soundFXSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                /* Update the sound effects volume every time this SeekBar is updated */
                 sfxVolume = soundFXSeekBar.getProgress();
+                /* Save the volume here in case the user escapes this activity using the phone's default back button */
+                getApplicationContext().getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).edit().putInt("sfxVolume",sfxVolume).apply();
             }
 
             @Override
@@ -117,17 +111,14 @@ public class Options extends Activity {
     private void configureMenuButton(){
 
         Button backToMenu = (Button) findViewById(R.id.backToMenu);
-        final MediaPlayer mp = MediaPlayer.create(this,R.raw.bubble_pop_1);
+        final MediaPlayer sfx = MediaPlayer.create(this,R.raw.bubble_pop_1);
 
         backToMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                settings.edit().putInt("sfxVolume",sfxVolume).apply();
-                settings.edit().putInt("bgmVolume",bgmVolume).apply();
-                float vol=(float)(Math.log(100-sfxVolume)/Math.log(100));
-                mp.setVolume(1-vol,1-vol);
-                mp.start();
+                float vol= 1 - (float)(Math.log(MAX_VOLUME - sfxVolume + 1)/Math.log(MAX_VOLUME));
+                sfx.setVolume(vol,vol);
+                sfx.start();
                 finish();
             }
         });
