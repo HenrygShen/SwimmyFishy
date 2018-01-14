@@ -2,6 +2,8 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,10 +13,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class Options extends Activity {
 
-    private AudioManager audioMananger;
+    public static final String PREFS_NAME = "Settings";
+    public int sfxVolume;
+    private int bgmVolume;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -31,8 +39,11 @@ public class Options extends Activity {
         /* Set the layout */
         setContentView(R.layout.options_window);
 
+        /* Grab the volumes passed through main activity */
+        SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME,0);
+        sfxVolume = settings.getInt("sfxVolume",0);
+        bgmVolume = getIntent().getIntExtra("bgmVolume",0);
         setUpScreen();
-
 
     }
     private void setUpScreen() {
@@ -56,41 +67,51 @@ public class Options extends Activity {
 
     private void configureBGMSeekbar(){
 
-        SeekBar bgmSeekbar  = (SeekBar) findViewById(R.id.BGMSeekbar);
-        bgmSeekbar.getProgress();
+        final SeekBar bgmSeekBar = (SeekBar) findViewById(R.id.BGMSeekbar);
+        bgmSeekBar.setMax(100);
+        bgmSeekBar.setProgress(bgmVolume);
+
+        bgmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                bgmVolume = bgmSeekBar.getProgress();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
     }
 
     private void configureSoundFXSeekbar(){
 
-        SeekBar soundFXSeekbar = (SeekBar) findViewById(R.id.soundFXSeekbar);
+        final SeekBar soundFXSeekBar = (SeekBar) findViewById(R.id.soundFXSeekbar);
+        soundFXSeekBar.setMax(100);
+        soundFXSeekBar.setProgress(sfxVolume);
 
-        try {
-            soundFXSeekbar.setMax(audioMananger.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-            soundFXSeekbar.setProgress(audioMananger.getStreamVolume(AudioManager.STREAM_MUSIC));
+        soundFXSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                sfxVolume = soundFXSeekBar.getProgress();
+            }
 
-            soundFXSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
+            }
 
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                    audioMananger.setStreamVolume(AudioManager.STREAM_MUSIC,i,0);
-                }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-             });
-        }
-        catch (Exception ex){
-
-        }
+            }
+        });
     }
 
     private void configureMenuButton(){
@@ -101,6 +122,11 @@ public class Options extends Activity {
         backToMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                settings.edit().putInt("sfxVolume",sfxVolume).apply();
+                settings.edit().putInt("bgmVolume",bgmVolume).apply();
+                float vol=(float)(Math.log(100-sfxVolume)/Math.log(100));
+                mp.setVolume(1-vol,1-vol);
                 mp.start();
                 finish();
             }
