@@ -6,30 +6,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 
 public class MainActivity extends Activity {
 
     public static final String PREFS_NAME = "Settings";
     private String highScore = "-1";
-    private static int VOLUME_SET_REQUEST_CODE = 0;
     private int sfxVolume;
     private int bgmVolume;
-
+    private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,30 +30,40 @@ public class MainActivity extends Activity {
         /* Hides the status bar */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        /* Read setting.txt from assets folder and load these settings */
-        //TODO
-
+        /* Read and load settings using SharedPreferences */
         loadSettings();
         configurePlayButton();
         configureOptionsButton();
+
+        mp = MediaPlayer.create(this,R.raw.bgm);
+        float vol=(float)(Math.log(100-bgmVolume)/Math.log(100));
+        mp.setVolume(1-vol,1-vol);
+        mp.start();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        sfxVolume = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getInt("sfxVolume",0);
+        bgmVolume = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getInt("bgmVolume",0);
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0");
+        float vol=(float)(Math.log(100-bgmVolume)/Math.log(100));
+        if (bgmVolume == 100 ){
+            vol = 0;
+        }
+        mp.setVolume(1-vol,1-vol);
+
+    }
 
     protected void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         sfxVolume = settings.getInt("sfxVolume",0);
         bgmVolume = settings.getInt("bgmVolume",0);
-        highScore = settings.getString("highScore","0");
+        highScore = settings.getString("highScore","N/A");
         TextView tv = (TextView) findViewById(R.id.high_score);
         tv.setText("High Score : "  + highScore);
-        highScore = "39";
-        settings.edit().putString("highScore",highScore).apply();
-
-
     }
-
-
 
     protected void configurePlayButton(){
 
@@ -73,9 +73,13 @@ public class MainActivity extends Activity {
         playBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent i  = new Intent(MainActivity.this,GameActivity.class);
-                mp.setVolume(sfxVolume,sfxVolume);
+
+                float vol=(float)(Math.log(100-sfxVolume)/Math.log(100));
+                mp.setVolume(1-vol,1-vol);
                 mp.start();
+
+                /* Start the game */
+                Intent i  = new Intent(MainActivity.this,GameActivity.class);
                 startActivity(i);
             }
         });
@@ -89,18 +93,16 @@ public class MainActivity extends Activity {
         setBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent i =  new Intent(MainActivity.this,Options.class);
-                sfxVolume = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt("sfxVolume",0);
-                bgmVolume = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt("bgmVolume",0);
+
                 float vol=(float)(Math.log(100-sfxVolume)/Math.log(100));
                 mp.setVolume(1-vol,1-vol);
                 mp.start();
+
+                /* Start the Options activity */
+                Intent i =  new Intent(MainActivity.this,Options.class);
                 startActivity(i);
             }
         });
     }
-
-
-
 
 }

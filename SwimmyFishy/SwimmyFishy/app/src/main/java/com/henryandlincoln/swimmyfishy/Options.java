@@ -42,7 +42,7 @@ public class Options extends Activity {
         /* Grab the volumes passed through main activity */
         SharedPreferences settings = getApplicationContext().getSharedPreferences(PREFS_NAME,0);
         sfxVolume = settings.getInt("sfxVolume",0);
-        bgmVolume = getIntent().getIntExtra("bgmVolume",0);
+        bgmVolume = settings.getInt("bgmVolume",0);
         setUpScreen();
 
     }
@@ -61,11 +61,11 @@ public class Options extends Activity {
 
     private void configureInteractions(){
         configureMenuButton();
-        configureBGMSeekbar();
-        configureSoundFXSeekbar();
+        configureBGMSeekBar();
+        configureSoundFXSeekBar();
     }
 
-    private void configureBGMSeekbar(){
+    private void configureBGMSeekBar(){
 
         final SeekBar bgmSeekBar = (SeekBar) findViewById(R.id.BGMSeekbar);
         bgmSeekBar.setMax(100);
@@ -90,7 +90,7 @@ public class Options extends Activity {
 
     }
 
-    private void configureSoundFXSeekbar(){
+    private void configureSoundFXSeekBar(){
 
         final SeekBar soundFXSeekBar = (SeekBar) findViewById(R.id.soundFXSeekbar);
         soundFXSeekBar.setMax(100);

@@ -82,14 +82,4 @@
         android:textStyle="bold"
         android:typeface="normal" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/backToMenu"
-        android:layout_alignStart="@+id/backToMenu"
-        android:layout_marginBottom="64dp"
-        android:layout_marginStart="25dp"
-        android:text="TextView" />
-
 </RelativeLayout>
