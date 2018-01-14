@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         bgmVolume = settings.getInt("bgmVolume",0);
         highScore = settings.getString("highScore","N/A");
         TextView tv = (TextView) findViewById(R.id.high_score);
-        tv.setText("High Score : "  + highScore);
+        tv.setText(highScore);
     }
 
     private void configurePlayButton(){
