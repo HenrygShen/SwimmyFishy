@@ -8,7 +8,7 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/high_score"
         android:layout_width="193dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -16,7 +16,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="casual"
-        android:text="High Score : "
         android:textColor="@android:color/background_light"
         android:textStyle="bold"
         android:typeface="normal"
@@ -29,13 +28,13 @@
 
     <Button
         android:id="@+id/play"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/menubuttons"
+        android:background="@drawable/button_ellipse2"
         android:fontFamily="casual"
         android:text="Play"
         android:textAllCaps="false"
@@ -49,13 +48,13 @@
 
     <Button
         android:id="@+id/options"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/menubuttons"
+        android:background="@drawable/button_ellipse2"
         android:fontFamily="casual"
         android:text="Options"
         android:textAllCaps="false"
