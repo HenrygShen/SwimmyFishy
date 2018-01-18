@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
 
     public static final String PREFS_NAME = "Settings";
     private static final int MAX_VOLUME = 100;
+    private long lastClickTime = 0;
     private String highScore = "-1";
     private int sfxVolume;
     private int bgmVolume;
@@ -85,6 +87,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+                    return;
+                }
+
+                lastClickTime = SystemClock.elapsedRealtime();
+
                 setVolume(soundEffectButton,sfxVolume);
                 soundEffectButton.start();
 
@@ -103,6 +111,12 @@ public class MainActivity extends Activity {
         setBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+                    return;
+                }
+
+                lastClickTime = SystemClock.elapsedRealtime();
 
                 setVolume(soundEffectButton,sfxVolume);
                 soundEffectButton.start();

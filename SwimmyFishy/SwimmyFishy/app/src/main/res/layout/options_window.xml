@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/options_window"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -71,10 +69,10 @@
         android:id="@+id/backToMenu"
         android:layout_width="150dp"
         android:layout_height="70dp"
+        android:layout_alignEnd="@+id/sfxVolume"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp"
-        android:background="@drawable/back_to_menu_button"
+        android:layout_marginBottom="41dp"
+        android:background="@drawable/button_back_to_menu"
         android:fontFamily="casual"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
