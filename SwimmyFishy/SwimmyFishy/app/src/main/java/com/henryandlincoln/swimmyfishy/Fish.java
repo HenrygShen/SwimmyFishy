@@ -18,7 +18,7 @@ public class Fish extends GameObject {
 
     public static final float VELOCITY = 0.1f;
 
-    private int movingVectorY = 5;
+    private int movingVectorY = 20;
     private int movingVectorX = 10;
 
     private long lastDrawNanoTime =-1;
@@ -65,9 +65,11 @@ public class Fish extends GameObject {
     public void update() {
 
         this.col++;
+
         if(col >= this.colCount)  {
             this.col =0;
         }
+
         /* Current time in nanoseconds */
         long now = System.nanoTime();
 
@@ -84,18 +86,9 @@ public class Fish extends GameObject {
         double movingVectorLength = Math.sqrt(movingVectorX* movingVectorX + movingVectorY*movingVectorY);
 
         // Calculate the new position of the game character.
-        this.x = x +  (int)(distance* movingVectorX / movingVectorLength);
-        this.y = y +  (int)(distance);
+        this.y = y +  (int)(distance * movingVectorY / movingVectorLength);
 
         // When the game's character touches the edge of the screen, then change direction
-        if(this.x < 0 )  {
-            this.x = 0;
-            this.movingVectorX = - this.movingVectorX;
-        } else if(this.x > this.gameView.getWidth() -width)  {
-            this.x= this.gameView.getWidth()-width;
-            this.movingVectorX = - this.movingVectorX;
-        }
-
         if(this.y < 0 )  {
             this.y = 0;
             this.movingVectorY = - this.movingVectorY;
@@ -107,9 +100,11 @@ public class Fish extends GameObject {
 
         if(movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
             this.row = ROW_NOT_FLAPPING;
-        }else if(movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
+        }
+        else if(movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
             this.row = ROW_NOT_FLAPPING;
-        }else  {
+        }
+        else {
             this.row = ROW_NOT_FLAPPING;
         }
 
