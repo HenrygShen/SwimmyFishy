@@ -44,10 +44,12 @@ public class Fish extends GameObject {
         this.fall = new Bitmap[colCount];
 
         this.row = ROW_UP_ACTION;
-        
+
         for (int col =0;col<this.colCount;col++){
             this.notFlapping[col] =  this.createSubImageAt(ROW_DOWN_ACTION,col);
             this.flapping[col] = this.createSubImageAt(ROW_UP_ACTION,col);
+            this.fall[col] = this.createSubImageAt(ROW_FALL_ACTION,col);
+            this.recover[col] = this.createSubImageAt(ROW_RECOVER_ACTION,col);
         }
     }
 
@@ -105,15 +107,14 @@ public class Fish extends GameObject {
         }
 
 
-
-        if (!falling && ((this.row == ROW_UP_ACTION) || (this.row == ROW_RECOVER_ACTION))) {
+        if (!falling) {
             this.row = ROW_UP_ACTION;
         }
-        else if (falling && (this.row == ROW_UP_ACTION)) {
-            this.row = ROW_DOWN_ACTION;
-        }
-        else if (falling && ((this.row == ROW_DOWN_ACTION) || (this.row == ROW_FALL_ACTION))){
+        else if (falling && ((this.row == ROW_DOWN_ACTION) || (this.row == ROW_FALL_ACTION))) {
             this.row = ROW_FALL_ACTION;
+        }
+        else if (falling && (this.row == ROW_UP_ACTION)){
+            this.row = ROW_DOWN_ACTION;
         }
         else if (!falling  && (this.row == ROW_FALL_ACTION)){
             this.row = ROW_RECOVER_ACTION;
