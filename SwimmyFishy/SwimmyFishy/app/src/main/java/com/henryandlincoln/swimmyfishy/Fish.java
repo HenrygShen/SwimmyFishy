@@ -102,7 +102,7 @@ public class Fish extends GameObject {
         if (this.y <= 0 )  {
             this.y = 0;
         }
-        else if (this.y > SCREEN_HEIGHT){
+        else if (this.y >= SCREEN_HEIGHT){
             this.y = SCREEN_HEIGHT;
         }
 
