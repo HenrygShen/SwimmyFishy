@@ -9,8 +9,8 @@ import android.graphics.Canvas;
 
 public class Fish extends GameObject {
 
-    private static final int ROW_NOT_FLAPPING = 0;
-    private static final int ROW_FLAPPING = 1;
+    private static final int ROW_UP_ACTION = 0;
+    private static final int ROW_DOWN_ACTION = 1;
 
 
     private int row;
@@ -30,7 +30,7 @@ public class Fish extends GameObject {
 
     public Fish(GameView gameView, Bitmap image, int x, int y) {
 
-        super(image, 2, 2, x, y);
+        super(image, 2, 4, x, y);
         this.row = 0;
         this.col = 0;
 
@@ -39,16 +39,16 @@ public class Fish extends GameObject {
         this.flapping = new Bitmap[colCount];
 
         for (int col =0;col<this.colCount;col++){
-            this.notFlapping[col] =  this.createSubImageAt(ROW_NOT_FLAPPING,col);
-            this.flapping[col] = this.createSubImageAt(ROW_FLAPPING,col);
+            this.notFlapping[col] =  this.createSubImageAt(ROW_DOWN_ACTION,col);
+            this.flapping[col] = this.createSubImageAt(ROW_UP_ACTION,col);
         }
     }
 
     public Bitmap[] getMoveBitmaps() {
         switch (row)  {
-            case ROW_NOT_FLAPPING:
+            case ROW_DOWN_ACTION:
                 return  this.notFlapping;
-            case ROW_FLAPPING:
+            case ROW_UP_ACTION:
                 return this.flapping;
             default:
                 return null;
@@ -99,13 +99,13 @@ public class Fish extends GameObject {
 
 
         if(movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-            this.row = ROW_NOT_FLAPPING;
+            this.row = ROW_UP_ACTION;
         }
         else if(movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-            this.row = ROW_NOT_FLAPPING;
+            this.row = ROW_DOWN_ACTION;
         }
         else {
-            this.row = ROW_NOT_FLAPPING;
+            this.row = ROW_UP_ACTION;
         }
 
     }

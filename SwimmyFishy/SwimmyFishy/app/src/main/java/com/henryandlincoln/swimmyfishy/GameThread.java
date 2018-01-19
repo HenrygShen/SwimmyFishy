@@ -47,7 +47,7 @@ public class GameThread extends Thread {
             if(waitTime < 50)  {
                 waitTime= 50; // Millisecond.
             }
-            System.out.print(" Wait Time="+ waitTime);
+            System.out.print(" Wait Time= "+ waitTime);
 
             try {
                 // Sleep.

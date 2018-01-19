@@ -56,7 +56,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
 
         Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.catfish_sprite_low);
-        this.fish = new Fish(this,fishBitMap,200,200);
+        this.fish = new Fish(this,fishBitMap,100,500);
 
         this.gameThread = new GameThread(this,holder);
         this.gameThread.setRunning(true);
