@@ -95,15 +95,20 @@ public class Fish extends GameObject {
 
         this.y = this.y + (int) distance;
 
-        falling = (VELOCITY > 0);
+        falling = (VELOCITY >= 0);
 
 
         /* Keep object at edge of screen if there */
         if (this.y <= 0 )  {
             this.y = 0;
         }
-        else if (this.y >= SCREEN_HEIGHT){
-            this.y = SCREEN_HEIGHT;
+        else if (this.y >= SCREEN_HEIGHT - height){
+            this.y = SCREEN_HEIGHT - height;
+            VELOCITY = 0.f;
+            GRAVITY = 0.f;
+        }
+        else {
+            GRAVITY =  0.1f;
         }
 
 
@@ -135,7 +140,7 @@ public class Fish extends GameObject {
 
     public void jump()  {
 
-       VELOCITY = - 0.9f;
+       VELOCITY = - 1.1f;
     }
 }
 

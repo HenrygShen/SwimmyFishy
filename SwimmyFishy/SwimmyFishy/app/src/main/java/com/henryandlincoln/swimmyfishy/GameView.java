@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,11 +19,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context)  {
         super(context);
 
+
         // Make Game Surface focusable so it can handle events.
         this.setFocusable(true);
 
         // Set callback.
         this.getHolder().addCallback(this);
+
     }
 
     public void update()  {
@@ -53,7 +56,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.catfish_sprite_low);
         this.fish = new Fish(this,fishBitMap,100,500,this.getHeight());
-
         this.gameThread = new GameThread(this,holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
