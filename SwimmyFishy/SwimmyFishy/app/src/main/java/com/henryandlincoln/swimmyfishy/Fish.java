@@ -15,15 +15,15 @@ public class Fish extends GameObject {
     private int row;
     private int col;
 
-    public static final float VELOCITY = 0.01f;
-
-    private float lastDrawNanoTime = -1;
-    private int jumpDestination = 0 ;
-    private int movingVectorY = 10;
-    private boolean falling = false;
+    public static float VELOCITY;
+    public static float GRAVITY;
+    private float lastDrawNanoTime;
+    private boolean falling;
 
     private Bitmap[] notFlapping;
     private Bitmap[] flapping;
+    private Bitmap[] fall;
+    private Bitmap[] recover;
 
     private GameView gameView;
 
@@ -32,11 +32,19 @@ public class Fish extends GameObject {
         super(image, 4, 4, x, y,SCREEN_HEIGHT);
         this.row = 0;
         this.col = 0;
+        falling = false;
+        lastDrawNanoTime = -1 ;
+        VELOCITY =  0.1f;
+        GRAVITY = 0.1f;
 
         this.gameView= gameView;
         this.notFlapping = new Bitmap[colCount];
         this.flapping = new Bitmap[colCount];
+        this.recover = new Bitmap[colCount];
+        this.fall = new Bitmap[colCount];
 
+        this.row = ROW_UP_ACTION;
+        
         for (int col =0;col<this.colCount;col++){
             this.notFlapping[col] =  this.createSubImageAt(ROW_DOWN_ACTION,col);
             this.flapping[col] = this.createSubImageAt(ROW_UP_ACTION,col);
@@ -49,6 +57,10 @@ public class Fish extends GameObject {
                 return  this.notFlapping;
             case ROW_UP_ACTION:
                 return this.flapping;
+            case ROW_FALL_ACTION:
+                return this.fall;
+            case ROW_RECOVER_ACTION:
+                return this.recover;
             default:
                 return null;
         }
@@ -66,7 +78,7 @@ public class Fish extends GameObject {
         this.col++;
 
         if(col >= this.colCount)  {
-            this.col =0;
+            this.col = 0;
         }
 
         long now = System.nanoTime();
@@ -74,26 +86,24 @@ public class Fish extends GameObject {
             lastDrawNanoTime= now;
         }
         int timeDifference = (int) ((now - lastDrawNanoTime)/ 1000000 );
-        float distance = VELOCITY * timeDifference;
-        if (jumpDestination == 0 ){
-            this.falling = true;
-        }
 
-        if (this.y > jumpDestination){
-            this.y = this.y - (int) distance;
-            falling = false;
-        }
-        else {
-            this.y = this.getY() + (int) (distance * 0.1);
-            falling = true;
-        }
+        VELOCITY += GRAVITY;
+        float distance = VELOCITY * timeDifference;
+
+
+        this.y = this.y + (int) distance;
+
+        falling = (VELOCITY > 0);
+
+
         /* Keep object at edge of screen if there */
-        if (this.y < 0 )  {
+        if (this.y <= 0 )  {
             this.y = 0;
         }
         else if (this.y > SCREEN_HEIGHT){
             this.y = SCREEN_HEIGHT;
         }
+
 
 
         if (!falling && ((this.row == ROW_UP_ACTION) || (this.row == ROW_RECOVER_ACTION))) {
@@ -108,6 +118,9 @@ public class Fish extends GameObject {
         else if (!falling  && (this.row == ROW_FALL_ACTION)){
             this.row = ROW_RECOVER_ACTION;
         }
+        else {
+            this.row = ROW_UP_ACTION;
+        }
 
 
     }
@@ -116,12 +129,12 @@ public class Fish extends GameObject {
         Bitmap bitmap = this.getCurrentMoveBitmap();
         canvas.drawBitmap(bitmap,x, y, null);
         // Last draw time.
-       // this.lastDrawNanoTime= System.nanoTime();
+        this.lastDrawNanoTime= System.nanoTime();
     }
 
     public void jump()  {
 
-        jumpDestination = this.y - 50;
+       VELOCITY = - 0.9f;
     }
 }
 
