@@ -32,13 +32,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x=  (int)event.getX();
-            int y = (int)event.getY();
 
-            int movingVectorX = x - this.fish.getX() ;
-            int movingVectorY = y - this.fish.getY() ;
+            this.fish.jump();
 
-            this.fish.setMovingVector(movingVectorX,movingVectorY);
             return true;
         }
         return false;
@@ -56,7 +52,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
 
         Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.catfish_sprite_low);
-        this.fish = new Fish(this,fishBitMap,100,500);
+        this.fish = new Fish(this,fishBitMap,100,500,this.getHeight());
 
         this.gameThread = new GameThread(this,holder);
         this.gameThread.setRunning(true);

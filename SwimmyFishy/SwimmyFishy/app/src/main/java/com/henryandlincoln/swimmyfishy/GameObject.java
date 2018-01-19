@@ -14,18 +14,17 @@ public abstract class GameObject {
     protected final int HEIGHT;
 
     protected final int width;
-
-
     protected final int height;
+    protected final int SCREEN_HEIGHT;
     protected int x;
     protected int y;
 
-    public GameObject(Bitmap image, int rowCount, int colCount, int x, int y)  {
+    public GameObject(Bitmap image, int rowCount, int colCount, int x, int y,int SCREEN_HEIGHT)  {
 
         this.image = image;
         this.rowCount= rowCount;
         this.colCount= colCount;
-
+        this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.x= x;
         this.y= y;
 
@@ -52,12 +51,5 @@ public abstract class GameObject {
     }
 
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
 
 }
