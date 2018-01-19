@@ -38,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int movingVectorX = x - this.fish.getX() ;
             int movingVectorY = y - this.fish.getY() ;
 
-            this.fish.setMovingVector(movingVectorY);
+            this.fish.setMovingVector(movingVectorX,movingVectorY);
             return true;
         }
         return false;
