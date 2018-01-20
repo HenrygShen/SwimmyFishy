@@ -30,21 +30,24 @@ public class Fish extends GameObject {
     public Fish(GameView gameView, Bitmap image, int x, int y,int SCREEN_HEIGHT) {
 
         super(image, 4, 4, x, y,SCREEN_HEIGHT);
-        this.row = 0;
+
+        /* Initialise the values */
+        this.row = ROW_UP_ACTION;
         this.col = 0;
         falling = false;
         lastDrawNanoTime = -1 ;
         VELOCITY =  0.1f;
         GRAVITY = 0.1f;
-
         this.gameView= gameView;
+
+        /* Create bitmap arrays for different actions */
         this.notFlapping = new Bitmap[colCount];
         this.flapping = new Bitmap[colCount];
         this.recover = new Bitmap[colCount];
         this.fall = new Bitmap[colCount];
 
-        this.row = ROW_UP_ACTION;
 
+        /* Populate the bitmap arrays */
         for (int col =0;col<this.colCount;col++){
             this.notFlapping[col] =  this.createSubImageAt(ROW_DOWN_ACTION,col);
             this.flapping[col] = this.createSubImageAt(ROW_UP_ACTION,col);
@@ -71,6 +74,9 @@ public class Fish extends GameObject {
     public Bitmap getCurrentMoveBitmap() {
 
         Bitmap[] bitmaps = this.getMoveBitmaps();
+        if (this.row == ROW_FALL_ACTION){
+            this.col = 0;
+        }
         return bitmaps[this.col];
     }
 
@@ -140,7 +146,7 @@ public class Fish extends GameObject {
 
     public void jump()  {
 
-       VELOCITY = - 1.1f;
+       VELOCITY = - 1.5f;
     }
 }
 

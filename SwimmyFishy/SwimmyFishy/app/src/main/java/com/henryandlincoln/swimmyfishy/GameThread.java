@@ -1,6 +1,5 @@
 package com.henryandlincoln.swimmyfishy;
 
-
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
@@ -24,7 +23,6 @@ public class GameThread extends Thread {
             try {
                 // Get Canvas from Holder and lock it.
                 canvas = this.surfaceHolder.lockCanvas();
-
                 // Synchronized
                 synchronized (canvas)  {
                     this.gameView.update();
@@ -44,19 +42,18 @@ public class GameThread extends Thread {
             // Interval to redraw game
             // (Change nanoseconds to milliseconds)
             long waitTime = (now - startTime)/1000000;
-            if(waitTime < 50)  {
-                waitTime= 50; // Millisecond.
+            if(waitTime < 30)  {
+                waitTime= 30; // Millisecond.
             }
-            System.out.print(" Wait Time= "+ waitTime);
 
             try {
                 // Sleep.
                 this.sleep(waitTime);
-            } catch(InterruptedException e)  {
+            }
+            catch(InterruptedException e)  {
 
             }
             startTime = System.nanoTime();
-            System.out.print(".");
         }
     }
 
