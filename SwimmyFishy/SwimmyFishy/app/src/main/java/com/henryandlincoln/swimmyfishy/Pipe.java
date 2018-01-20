@@ -10,6 +10,9 @@ public class Pipe extends GameObject {
     //int level
     GameView gameView;
     private Bitmap upPipe;
+    private int upPipeY;
+    private int downPipeY;
+
     private Bitmap downPipe;
     private int SCREEN_WIDTH;
     private boolean drawPipe;
@@ -38,16 +41,19 @@ public class Pipe extends GameObject {
     public void update(){
         drawPipe = (lastDrawTime >= 3000);
         if (drawPipe){
-            this.x -= 1;
+            this.x -= 10;
 
 
 
         }
         else {
             lastDrawTime += (System.nanoTime()/1000000);
-            Random rand = new Random();
-            this.y = rand.nextInt(500) + 1;
+            upPipeY = SCREEN_HEIGHT - 300;
+            downPipeY = 0 ;
 
+        }
+        if (this.x <= 0){
+            lastDrawTime =0 ;
         }
 
 
@@ -56,7 +62,7 @@ public class Pipe extends GameObject {
     public void draw(Canvas canvas){
         if (drawPipe){
             canvas.drawBitmap(downPipe,x, y, null);
-            canvas.drawBitmap(upPipe,x,y,null);
+            canvas.drawBitmap(upPipe,x,upPipeY,null);
         }
     }
 }
