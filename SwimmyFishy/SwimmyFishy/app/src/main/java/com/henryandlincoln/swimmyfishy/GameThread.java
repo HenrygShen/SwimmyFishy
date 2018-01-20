@@ -42,8 +42,8 @@ public class GameThread extends Thread {
             // Interval to redraw game
             // (Change nanoseconds to milliseconds)
             long waitTime = (now - startTime)/1000000;
-            if(waitTime < 30)  {
-                waitTime= 30; // Millisecond.
+            if(waitTime < 25)  {
+                waitTime= 25; // Millisecond.
             }
 
             try {
