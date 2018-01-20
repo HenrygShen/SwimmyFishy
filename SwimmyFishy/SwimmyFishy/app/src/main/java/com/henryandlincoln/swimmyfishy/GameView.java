@@ -13,6 +13,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread gameThread;
     private Fish fish;
+    private Pipe pipe;
     Bitmap bg = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg);
 
 
@@ -32,6 +33,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update()  {
 
         this.fish.update();
+        this.pipe.update();
     }
 
     @Override
@@ -50,6 +52,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         canvas.drawBitmap(bg,0,0,null);
         this.fish.draw(canvas);
+        this.pipe.draw(canvas);
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -57,8 +60,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
 
         Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.catfish_sprite_low);
+        Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
         bg = Bitmap.createScaledBitmap(bg,this.getWidth(),this.getHeight(),false);
         this.fish = new Fish(this,fishBitMap,100,500,this.getHeight());
+        this.pipe = new Pipe(this,pipeBitMap,0,0 ,this.getHeight(),this.getWidth());
         this.gameThread = new GameThread(this,holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
