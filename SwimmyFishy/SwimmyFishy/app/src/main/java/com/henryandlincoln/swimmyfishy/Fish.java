@@ -19,6 +19,9 @@ public class Fish extends GameObject {
     public static float GRAVITY;
     private float lastDrawNanoTime;
     private boolean falling;
+    private long now;
+    private float distance;
+    private int timeDifference;
 
     private Bitmap[] notFlapping;
     private Bitmap[] flapping;
@@ -73,11 +76,10 @@ public class Fish extends GameObject {
 
     public Bitmap getCurrentMoveBitmap() {
 
-        Bitmap[] bitmaps = this.getMoveBitmaps();
         if (this.row == ROW_FALL_ACTION){
             this.col = 0;
         }
-        return bitmaps[this.col];
+        return this.getMoveBitmaps()[this.col];
     }
 
 
@@ -89,14 +91,14 @@ public class Fish extends GameObject {
             this.col = 0;
         }
 
-        long now = System.nanoTime();
+        now = System.nanoTime();
         if(lastDrawNanoTime==-1) {
             lastDrawNanoTime= now;
         }
-        int timeDifference = (int) ((now - lastDrawNanoTime)/ 1000000 );
+        timeDifference = (int) ((now - lastDrawNanoTime)/ 1000000 );
 
         VELOCITY += GRAVITY;
-        float distance = VELOCITY * timeDifference;
+        distance = VELOCITY * timeDifference;
 
 
         this.y = this.y + (int) distance;
@@ -138,15 +140,14 @@ public class Fish extends GameObject {
     }
 
     public void draw(Canvas canvas)  {
-        Bitmap bitmap = this.getCurrentMoveBitmap();
-        canvas.drawBitmap(bitmap,x, y, null);
+        canvas.drawBitmap(this.getCurrentMoveBitmap(),x, y, null);
         // Last draw time.
         this.lastDrawNanoTime= System.nanoTime();
     }
 
     public void jump()  {
 
-       VELOCITY = - 1.5f;
+       VELOCITY = - 1.3f;
     }
 }
 

@@ -24,10 +24,11 @@ public class GameThread extends Thread {
                 // Get Canvas from Holder and lock it.
                 canvas = this.surfaceHolder.lockCanvas();
                 // Synchronized
-                synchronized (canvas)  {
+                synchronized (canvas) {
                     this.gameView.update();
                     this.gameView.draw(canvas);
                 }
+
             }
             catch(Exception e)  {
                 // Do nothing.
@@ -42,12 +43,11 @@ public class GameThread extends Thread {
             // Interval to redraw game
             // (Change nanoseconds to milliseconds)
             long waitTime = (now - startTime)/1000000;
-            if(waitTime < 25)  {
-                waitTime= 25; // Millisecond.
+            if (waitTime < 20)  {
+                waitTime= 20; // Millisecond.
             }
 
             try {
-                // Sleep.
                 this.sleep(waitTime);
             }
             catch(InterruptedException e)  {

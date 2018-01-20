@@ -38,12 +38,12 @@ public class Pipe extends GameObject {
     public void update(){
         drawPipe = (lastDrawTime >= 3000);
         if (drawPipe) {
-            this.x -= 15;
+            this.x -= 25;
             if (initialDraw){
                 Random rand = new Random();
                 upPipeHeight = rand.nextInt(800) + 500 ;
                 upPipeY = SCREEN_HEIGHT - upPipeHeight;
-                downPipeY = upPipeY - height - 300;
+                downPipeY = upPipeY - height - 100;
                 initialDraw = false;
             }
         }
