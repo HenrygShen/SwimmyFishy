@@ -24,7 +24,7 @@ public class Pipe extends GameObject {
         super(image, 1, 2, x, y,SCREEN_HEIGHT);
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.gameView = gameView;
-        this.x = SCREEN_WIDTH;
+        this.x = x;
         drawPipe = false;
         initialDraw = true;
         lastDrawTime =  0;
@@ -36,9 +36,9 @@ public class Pipe extends GameObject {
 
 
     public void update(){
-        drawPipe = (lastDrawTime >= 3000);
+
+        this.x -= 10;
         if (drawPipe) {
-            this.x -= 10;
             if (initialDraw){
                 Random rand = new Random();
                 upPipeHeight = rand.nextInt(800) + 500 ;
@@ -47,22 +47,19 @@ public class Pipe extends GameObject {
                 initialDraw = false;
             }
         }
-        else {
-            lastDrawTime += (System.nanoTime()*1000000);
-        }
-        if (this.x <= -500){
-            lastDrawTime = 3000 ;
+
+        if (this.x <= - this.width){
+            drawPipe = true;
             this.x = SCREEN_WIDTH;
             initialDraw = true;
         }
-
 
     }
 
     public void draw(Canvas canvas){
         if (drawPipe){
             canvas.drawBitmap(downPipe,x, downPipeY, null);
-            //canvas.drawBitmap(upPipe,x,upPipeY,null);
+            canvas.drawBitmap(upPipe,x,upPipeY,null);
         }
     }
 }

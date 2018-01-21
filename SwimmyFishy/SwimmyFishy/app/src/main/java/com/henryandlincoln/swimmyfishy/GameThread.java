@@ -46,7 +46,7 @@ public class GameThread extends Thread {
         long timeDiff;      // the time it took for the cycle to execute
         int sleepTime;      // ms to sleep (<0 if we're behind)
         int framesSkipped;  // number of frames being skipped
-        sleepTime = 0;
+
         while (running) {
             canvas = null;
 

@@ -147,7 +147,7 @@ public class Fish extends GameObject {
 
     public void jump()  {
 
-       VELOCITY = - 1.3f;
+       VELOCITY = - 2.0f;
     }
 }
 
