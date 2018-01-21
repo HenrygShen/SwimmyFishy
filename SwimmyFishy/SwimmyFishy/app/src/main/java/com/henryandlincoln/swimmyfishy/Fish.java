@@ -110,8 +110,8 @@ public class Fish extends GameObject {
         if (this.y <= 0 )  {
             this.y = 0;
         }
-        else if (this.y >= SCREEN_HEIGHT - height){
-            this.y = SCREEN_HEIGHT - height;
+        else if (this.y >= SCREEN_HEIGHT - height - 190){
+            this.y = SCREEN_HEIGHT - height - 190;
             VELOCITY = 0.f;
             GRAVITY = 0.f;
         }

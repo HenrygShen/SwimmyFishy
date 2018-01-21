@@ -38,7 +38,7 @@ public class Pipe extends GameObject {
     public void update(){
         drawPipe = (lastDrawTime >= 3000);
         if (drawPipe) {
-            this.x -= 25;
+            this.x -= 10;
             if (initialDraw){
                 Random rand = new Random();
                 upPipeHeight = rand.nextInt(800) + 500 ;
@@ -62,7 +62,7 @@ public class Pipe extends GameObject {
     public void draw(Canvas canvas){
         if (drawPipe){
             canvas.drawBitmap(downPipe,x, downPipeY, null);
-            canvas.drawBitmap(upPipe,x,upPipeY,null);
+            //canvas.drawBitmap(upPipe,x,upPipeY,null);
         }
     }
 }
