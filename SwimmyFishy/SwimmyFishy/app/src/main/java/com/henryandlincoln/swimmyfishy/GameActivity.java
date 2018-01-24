@@ -44,4 +44,8 @@ public class GameActivity extends Activity {
         gameView.stopThread();
     }
 
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 }

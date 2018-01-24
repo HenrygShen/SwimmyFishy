@@ -80,7 +80,7 @@ public class GameThread extends Thread {
                     while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS) {
 
                         /* Catch up on updates */
-                        gameView.update();
+                       // gameView.update();
                         sleepTime += FRAME_PERIOD;
                         framesSkipped++;
                     }
@@ -92,7 +92,7 @@ public class GameThread extends Thread {
 
                     /* Temporary code for fps checking */
                     framesSkippedPerStatCycle += framesSkipped;
-                    storeStats();
+                   // storeStats();
                     /* Temporary code for fps checking */
                 }
             }

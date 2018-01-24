@@ -80,8 +80,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (GameObject object : gameObjects){
             object.draw(canvas);
         }
-        canvas.drawBitmap(bg_base,0,(int)(SCREEN_HEIGHT*5/6),null);
-        displayFps(canvas, avgFps);
+        canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
+        //displayFps(canvas, avgFps);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
 
         bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
-
+        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT*2/3,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
             Pipe p  = new Pipe(pipeBitMap,i*this.getWidth()*7/8,0,SCREEN_WIDTH,SCREEN_HEIGHT);
             gameObjects.add(p);
