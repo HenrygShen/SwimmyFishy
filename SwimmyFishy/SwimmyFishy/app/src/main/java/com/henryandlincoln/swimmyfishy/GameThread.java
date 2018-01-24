@@ -47,42 +47,40 @@ public class GameThread extends Thread {
         int sleepTime;      // ms to sleep (<0 if we're behind)
         int framesSkipped;  // number of frames being skipped
 
-        while (running) {
-            canvas = null;
 
+        while (this.running) {
+
+            canvas = null;
             try {
 
                 canvas = this.surfaceHolder.lockCanvas();
 
                 synchronized (surfaceHolder) {
 
+
+                    framesSkipped = 0;
                     beginTime = System.currentTimeMillis();
 
-                    framesSkipped = 0;  // resetting the frames skipped
-
-                    // update game state
+                    /* Update the screen */
                     this.gameView.update();
-                    // render state to the screen
-                    // draws the canvas on the panel
                     this.gameView.draw(canvas);
-                    // calculate how long did the cycle take
+
+                    /* Sleep time is dependent on the update and draw cycle period */
                     timeDiff = System.currentTimeMillis() - beginTime;
-                    // calculate sleep time
                     sleepTime = (int)(FRAME_PERIOD - timeDiff);
                     if (sleepTime > 0) {
-                        // if sleepTime > 0 we're OK
+                        /* Send the thread to sleep to keep FPS constant, in case UPS>FPS */
                         try {
                             Thread.sleep(sleepTime);
-
                         }
                         catch (InterruptedException e) {
                         }
-
                     }
 
                     while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS) {
 
-
+                        /* Catch up on updates */
+                        gameView.update();
                         sleepTime += FRAME_PERIOD;
                         framesSkipped++;
                     }
@@ -92,10 +90,10 @@ public class GameThread extends Thread {
                         Log.d(TAG, "Skipped:" + framesSkipped);
                     }
 
-                    // for statistics
+                    /* Temporary code for fps checking */
                     framesSkippedPerStatCycle += framesSkipped;
-                    // calling the routine to store the gathered statistics
                     storeStats();
+                    /* Temporary code for fps checking */
                 }
             }
             finally {
@@ -106,6 +104,7 @@ public class GameThread extends Thread {
         }
     }
 
+    /* Temporary code for fps checking */
     private void storeStats(){
 
         frameCountPerStatCycle++;
@@ -155,7 +154,7 @@ public class GameThread extends Thread {
         }
     }
 
-
+    /* Temporary code for fps checking */
     private void initTimingElements() {
         // initialise timing elements
         fpsStore = new double[FPS_HISTORY_NR];

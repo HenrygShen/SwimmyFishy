@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
         loadSettings();
         configurePlayButton();
         configureOptionsButton();
+        configureCharacterSelButton();
 
         mediaPlayer = MediaPlayer.create(this,R.raw.bgm);
         mediaPlayer.setVolume(0.5f,0.5f);
@@ -126,6 +127,28 @@ public class MainActivity extends Activity {
                 startActivity(i);
             }
         });
+    }
+
+    private void configureCharacterSelButton(){
+
+        Button selBtn = (Button) findViewById(R.id.characterSelect);
+
+        final MediaPlayer soundEffectButton = MediaPlayer.create(this,R.raw.bubble_pop_2);
+
+        selBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                setVolume(soundEffectButton,sfxVolume);
+                soundEffectButton.start();
+
+                /* Open the character select screen */
+                Intent i = new Intent(MainActivity.this,CharacterSelectActivity.class);
+                startActivity(i);
+
+            }
+        });
+
     }
 
     private void setVolume(MediaPlayer mp,int currentVolume){

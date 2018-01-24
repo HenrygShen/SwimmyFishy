@@ -1,36 +1,39 @@
 package com.henryandlincoln.swimmyfishy;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import java.util.Random;
 
-public class Pipe extends GameObject {
+public class Pipe implements GameObject {
 
-    //int level
     GameView gameView;
     private Bitmap upPipe;
     private int upPipeY;
     private int downPipeY;
+    private int x;
+    private int y;
     private int upPipeHeight;
     private Bitmap downPipe;
     private int SCREEN_WIDTH;
     private boolean drawPipe;
-    private long lastDrawTime;
+    private int pipeWidth;
+    private int pipeHeight;
     private boolean initialDraw;
+    private int SCREEN_HEIGHT;
 
-    public Pipe(GameView gameView, Bitmap image, int x, int y, int SCREEN_HEIGHT,int SCREEN_WIDTH){
+    public Pipe(Bitmap image, int x, int y, int SCREEN_WIDTH,int SCREEN_HEIGHT){
 
-        super(image, 1, 2, x, y,SCREEN_HEIGHT);
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.gameView = gameView;
         this.x = x;
         drawPipe = false;
         initialDraw = true;
-        lastDrawTime =  0;
-        upPipe = createSubImageAt(0,0);
-        downPipe = createSubImageAt(0,1);
+        pipeWidth = image.getWidth()/2;
+        pipeHeight = image.getHeight()/2;
 
+
+        upPipe = Bitmap.createBitmap(image,0*image.getWidth()/2,0,image.getWidth()/2,image.getHeight());
+        downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,image.getWidth()/2,image.getHeight());
 
     }
 
@@ -43,12 +46,12 @@ public class Pipe extends GameObject {
                 Random rand = new Random();
                 upPipeHeight = rand.nextInt(800) + 500 ;
                 upPipeY = SCREEN_HEIGHT - upPipeHeight;
-                downPipeY = upPipeY - height - 100;
+                downPipeY = upPipeY - pipeHeight - 100;
                 initialDraw = false;
             }
         }
 
-        if (this.x <= - this.width){
+        if (this.x <= - pipeWidth){
             drawPipe = true;
             this.x = SCREEN_WIDTH;
             initialDraw = true;
