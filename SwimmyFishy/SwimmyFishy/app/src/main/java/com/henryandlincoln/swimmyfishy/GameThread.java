@@ -34,6 +34,22 @@ public class GameThread extends Thread {
         this.surfaceHolder= surfaceHolder;
     }
 
+    public void firstDraw(){
+
+        Canvas canvas = null;
+
+        try {
+            canvas = this.surfaceHolder.lockCanvas();
+            this.gameView.update();
+            this.gameView.draw(canvas);
+        }
+        finally {
+            if (canvas != null) {
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+    }
+
     @Override
     public void run()  {
         Canvas canvas;

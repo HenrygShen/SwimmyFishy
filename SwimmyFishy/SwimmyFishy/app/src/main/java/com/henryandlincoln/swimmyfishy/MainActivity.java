@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 
     private static final String PREFS_NAME = "Settings";
     private long lastClickTime = 0;
-    private String highScore = "-1";
+    private String highScore;
 
 
 
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
         super.onResume();
 
         /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0");
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","N/A");
     }
 
     @Override
@@ -59,8 +59,6 @@ public class MainActivity extends Activity {
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         highScore = settings.getString("highScore","N/A");
-        TextView tv = (TextView) findViewById(R.id.high_score);
-        tv.setText(highScore);
     }
 
     private void configurePlayButton(){

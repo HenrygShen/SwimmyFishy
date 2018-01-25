@@ -93,7 +93,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setBackgrounds();
         loadFishCharacter();
         loadPipes();
-
+        gameThread.firstDraw();
 
     }
 
