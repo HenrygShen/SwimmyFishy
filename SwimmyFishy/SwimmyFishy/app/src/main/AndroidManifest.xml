@@ -19,9 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Options"
-            android:theme="@style/translucent_blue" />
         <activity android:name=".GameActivity" />
         <activity android:name=".CharacterSelectActivity"></activity>
     </application>

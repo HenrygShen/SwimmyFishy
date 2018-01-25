@@ -37,7 +37,6 @@ public class MainActivity extends Activity {
         /* Read and load settings using SharedPreferences */
         loadSettings();
         configurePlayButton();
-        configureOptionsButton();
         configureCharacterSelButton();
 
     }
@@ -83,30 +82,6 @@ public class MainActivity extends Activity {
 
                 /* Start the game */
                 Intent i  = new Intent(MainActivity.this,GameActivity.class);
-                startActivity(i);
-            }
-        });
-    }
-
-    private void configureOptionsButton(){
-
-        Button setBtn = (Button) findViewById(R.id.options);
-        final MediaPlayer soundEffectButton = MediaPlayer.create(this,R.raw.bubble_pop_2);
-
-        setBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
-                    return;
-                }
-
-                lastClickTime = SystemClock.elapsedRealtime();
-
-                soundEffectButton.start();
-
-                /* Start the Options activity */
-                Intent i =  new Intent(MainActivity.this,Options.class);
                 startActivity(i);
             }
         });
