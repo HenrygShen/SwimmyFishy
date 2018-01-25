@@ -90,8 +90,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.SCREEN_HEIGHT = this.getHeight();
         this.SCREEN_WIDTH = this.getWidth();
-
-        Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.catfish);
+        int characterChoice = this.game.getCharacter();
+        Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),characterChoice);
         bg = Bitmap.createScaledBitmap(bg,this.getWidth(),this.getHeight(),false);
         Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
 

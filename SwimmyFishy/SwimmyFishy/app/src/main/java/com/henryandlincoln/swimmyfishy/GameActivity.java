@@ -24,7 +24,7 @@ public class GameActivity extends Activity {
 
         int bgmVolume = settings.getInt("bgmVolume",0);
         int sfxVolume = settings.getInt("sfxVolume",0);
-        String character = settings.getString("character","catfish");
+        int character = settings.getInt("character",R.drawable.catfish);
         game.setCharacter(character);
         game.setVolume(bgmVolume,sfxVolume);
 

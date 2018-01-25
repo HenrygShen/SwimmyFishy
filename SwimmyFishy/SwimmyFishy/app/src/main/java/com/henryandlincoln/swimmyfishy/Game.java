@@ -1,11 +1,8 @@
 package com.henryandlincoln.swimmyfishy;
 
-
-import android.content.SharedPreferences;
-
 public class Game {
 
-    private String character;
+    private int character;
     private int bgmVolume;
     private int sfxVolume;
 
@@ -13,7 +10,7 @@ public class Game {
 
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(int character) {
         this.character = character;
     }
 
@@ -22,7 +19,7 @@ public class Game {
         this.sfxVolume = sfxVolume;
     }
 
-    public String getCharacter(){
+    public int getCharacter(){
         return this.character;
     }
 }
