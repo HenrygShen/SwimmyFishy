@@ -2,6 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,7 @@ public class CharacterSelectActivity extends Activity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         settings = this.getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
 
         windowHeight = this.getWindow().getDecorView().getHeight();

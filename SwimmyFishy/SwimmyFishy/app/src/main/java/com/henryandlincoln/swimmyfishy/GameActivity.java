@@ -2,6 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,7 +19,7 @@ public class GameActivity extends Activity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Game game = new Game();
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
 
