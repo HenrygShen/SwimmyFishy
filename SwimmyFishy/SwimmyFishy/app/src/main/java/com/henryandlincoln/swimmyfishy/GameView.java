@@ -18,7 +18,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
     private Fish playerCharacter;
-    private ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private ArrayList<Pipe> pipes = new ArrayList<>();
     private Bitmap bg = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg);
     private Bitmap bg_base = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
     private int SCREEN_HEIGHT;
@@ -47,9 +47,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update()  {
 
-       for (GameObject object : gameObjects){
-           object.update();
-       }
+       pipes.get(0).update(pipes.get(1).getX()-10);
+       pipes.get(1).update(pipes.get(0).getX());
+       playerCharacter.update();
     }
 
 
@@ -77,9 +77,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         canvas.drawPaint(paint);
 
-        for (GameObject object : gameObjects){
-            object.draw(canvas);
+        for (Pipe p : pipes){
+            p.draw(canvas);
         }
+        playerCharacter.draw(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
         //displayFps(canvas, avgFps);
     }
@@ -95,13 +96,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
 
         bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
-        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT*2/3,SCREEN_HEIGHT,false);
+        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT/3,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
             Pipe p  = new Pipe(pipeBitMap,i*this.getWidth()*7/8,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-            gameObjects.add(p);
+            pipes.add(p);
         }
         this.playerCharacter = new Fish(fishBitMap,100,500,SCREEN_WIDTH,SCREEN_HEIGHT);
-        gameObjects.add(playerCharacter);
 
     }
 

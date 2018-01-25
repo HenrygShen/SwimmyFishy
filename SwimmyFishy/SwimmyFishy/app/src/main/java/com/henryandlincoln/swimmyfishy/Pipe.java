@@ -41,8 +41,7 @@ public class Pipe implements GameObject {
         UP_LIMIT = SCREEN_HEIGHT * 3/5;
     }
 
-    @Override
-    public void update(){
+    public void update(int xPos){
 
         this.x -= 10;
         if (drawPipe) {
@@ -55,8 +54,8 @@ public class Pipe implements GameObject {
         }
 
         if (this.x <= - pipeWidth){
+            this.x = xPos + SCREEN_WIDTH * 7/8;
             drawPipe = true;
-            this.x = SCREEN_WIDTH;
             initialDraw = true;
         }
 
@@ -68,5 +67,14 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(downPipe,x, downPipeY, null);
             canvas.drawBitmap(upPipe,x,upPipeY,null);
         }
+    }
+
+    @Override
+    public void update(){
+
+    }
+    @Override
+    public int getX(){
+        return this.x;
     }
 }
