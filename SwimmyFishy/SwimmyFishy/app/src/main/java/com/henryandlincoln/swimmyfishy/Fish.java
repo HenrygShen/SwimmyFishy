@@ -4,49 +4,50 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 
-import static com.henryandlincoln.swimmyfishy.Fish.STATE.FLAP;
+import static com.henryandlincoln.swimmyfishy.Fish.STATE.*;
 
 
 public class Fish implements GameObject {
 
     enum STATE {
-            FLAP,
+
+        FLAP,
         ABILITY
     }
 
     private static float VELOCITY = 0.1f;
     private static float GRAVITY = 0.5f;
 
-    private static final int SPRITE_SHEET_ROWS = 1;
-    private static final int SPRITE_SHEET_COLS = 2;
+    private int x;
+    private int y;
     private final int SCREEN_HEIGHT;
     private final int SCREEN_WIDTH;
-    private boolean falling;
+    private final int spriteWidth;
+    private final int spriteHeight;
+    private static final int SPRITE_SHEET_ROWS = 1;
+    private static final int SPRITE_SHEET_COLS = 2;
     private float distance;
     private float angle;
     private STATE state;
     private Matrix matrix;
-    private int x;
-    private int y;
-    private Animation flapAnimation;
-    private AnimationManager animationManager;
-    private int spriteWidth;
-    private int spriteHeight;
+    private final Animation flapAnimation;
+    private final AnimationManager animationManager;
+
 
     public Fish(Bitmap spriteSheet, int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 
+        /* Create new matrix that rotates fish when it is falling */
         matrix = new Matrix();
+
+
+        spriteWidth = spriteSheet.getWidth()/SPRITE_SHEET_COLS;
+        spriteHeight = spriteSheet.getHeight()/SPRITE_SHEET_ROWS;
         this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.x = x;
         this.y = y;
 
-        int totalWidth = spriteSheet.getWidth();
-        int totalHeight = spriteSheet.getHeight();
-        spriteWidth = totalWidth/SPRITE_SHEET_COLS;
-        spriteHeight = totalHeight/SPRITE_SHEET_ROWS;
-
-        /* Set up the flap animation */
+        /* Set up flap animation and pass into animation manager which will play the animation 5 times per second */
         Bitmap[] flapAnim = new Bitmap[SPRITE_SHEET_COLS];
         for (int i =0;i<SPRITE_SHEET_COLS;i++) {
             flapAnim[i] = Bitmap.createBitmap(spriteSheet, (i* spriteWidth), 0, spriteWidth, spriteHeight);
@@ -66,7 +67,6 @@ public class Fish implements GameObject {
 
         angle = VELOCITY * 5.0f;
 
-
         /* Keep object at edge of screen if there */
         if (this.y <= 0 )  {
             this.y = 0;
@@ -75,8 +75,6 @@ public class Fish implements GameObject {
             this.y = (SCREEN_HEIGHT*5/6 - spriteHeight);
             //angle = 90;
         }
-
-
 
         this.rotate(angle);
 
@@ -87,7 +85,8 @@ public class Fish implements GameObject {
 
     @Override
     public int getX() {
-        return 0;
+
+        return this.x;
     }
 
     @Override
@@ -98,6 +97,7 @@ public class Fish implements GameObject {
     }
 
     private void rotate(float angle){
+
         angle = (angle>= 90) ? 90 : angle;
 
         this.matrix.reset();

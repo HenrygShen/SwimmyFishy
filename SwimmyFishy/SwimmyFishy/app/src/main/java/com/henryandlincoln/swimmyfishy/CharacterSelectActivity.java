@@ -23,17 +23,19 @@ public class CharacterSelectActivity extends Activity {
 
         super.onCreate(savedInstanceState);
 
+        /* Remove status,title bar and lock screen to portrait */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        settings = this.getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        setContentView(R.layout.activity_character_select);
 
+        /* Create settings to load character choice into */
+        settings = this.getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        dogUnlocked = settings.getBoolean("dogUnlocked",false);
+
+        /* The images for the buttons are dependent on the window size, use these variables to scale the images */
         windowHeight = this.getWindow().getDecorView().getHeight();
         windowWidth = this.getWindow().getDecorView().getWidth();
-
-        dogUnlocked = settings.getBoolean("dogUnlocked",true);
-
-        setContentView(R.layout.activity_character_select);
 
         configureCatButton();
         configureDogButton();

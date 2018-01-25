@@ -9,26 +9,26 @@ import android.view.WindowManager;
 
 public class GameActivity extends Activity {
 
+    private static final String PREFS_NAME = "Settings";
     private GameView gameView;
-    public static final String PREFS_NAME = "Settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        /* Remove status,title bar and lock screen to portrait */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Game game = new Game();
+
+        /* Load the character choice into the Game object, then pass into the game view to use */
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
-
-        int bgmVolume = settings.getInt("bgmVolume",0);
-        int sfxVolume = settings.getInt("sfxVolume",0);
         int character = settings.getInt("character",R.drawable.catfish);
-        game.setCharacter(character);
-        game.setVolume(bgmVolume,sfxVolume);
 
+        /* Create game object to pass into the game view, which will load the settings */
+        Game game = new Game();
+        game.setCharacter(character);
         gameView = new GameView(this,game);
         setContentView(gameView);
     }
@@ -45,8 +45,4 @@ public class GameActivity extends Activity {
         gameView.stopThread();
     }
 
-    @Override
-    public void onBackPressed(){
-        finish();
-    }
 }

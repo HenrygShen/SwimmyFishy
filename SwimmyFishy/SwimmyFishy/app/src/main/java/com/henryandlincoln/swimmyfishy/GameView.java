@@ -16,31 +16,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     private GameThread gameThread;
-
     private Fish playerCharacter;
     private ArrayList<Pipe> pipes = new ArrayList<>();
-    private Bitmap bg = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg);
     private Bitmap bg_base = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
     private int SCREEN_HEIGHT;
     private int SCREEN_WIDTH;
     private boolean firstTouch;
 
     private Game game;
-
     private Paint paint;
+
+    /* FOR DEBUGGING */
     private String avgFps;
 
     public GameView(Context context,Game game) {
 
         super(context);
-        this.game = game;
+
         this.setFocusable(true);
         this.getHolder().addCallback(this);
         this.gameThread = new GameThread(this,this.getHolder());
+        this.game = game;
         firstTouch = true;
-        paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
 
 
     }
@@ -61,6 +58,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 firstTouch = false;
                 this.gameThread.setRunning(true);
                 this.gameThread.start();
+                this.playerCharacter.jump();
                 return true;
             }
             else {
@@ -82,6 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         playerCharacter.draw(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
+
         //displayFps(canvas, avgFps);
     }
 
@@ -90,18 +89,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.SCREEN_HEIGHT = this.getHeight();
         this.SCREEN_WIDTH = this.getWidth();
-        int characterChoice = this.game.getCharacter();
-        Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),characterChoice);
-        bg = Bitmap.createScaledBitmap(bg,this.getWidth(),this.getHeight(),false);
-        Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
 
-        bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
-        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT/3,SCREEN_HEIGHT,false);
-        for (int i =0 ;i <2;i++){
-            Pipe p  = new Pipe(pipeBitMap,i*this.getWidth()*7/8,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-            pipes.add(p);
-        }
-        this.playerCharacter = new Fish(fishBitMap,100,500,SCREEN_WIDTH,SCREEN_HEIGHT);
+        setBackgrounds();
+        loadFishCharacter();
+        loadPipes();
+
 
     }
 
@@ -127,12 +119,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void setAvgFps(String avgFps) {
-
-        this.avgFps = avgFps;
-    }
 
     public void stopThread(){
+
         boolean retry= true;
         if (this.gameThread.isAlive()) {
             while (retry) {
@@ -147,6 +136,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    private void loadFishCharacter(){
+
+        int characterChoice = this.game.getCharacter();
+        Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),characterChoice);
+        this.playerCharacter = new Fish(fishBitMap,100,500,SCREEN_WIDTH,SCREEN_HEIGHT);
+    }
+
+    private void loadPipes(){
+
+        Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
+        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT/3,SCREEN_HEIGHT,false);
+        for (int i =0 ;i <2;i++){
+            Pipe p  = new Pipe(pipeBitMap,i*this.getWidth()*7/8,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+            pipes.add(p);
+        }
+    }
+
+    private void setBackgrounds(){
+
+        paint = new Paint();
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.FILL);
+        bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
+    }
+
+    /* FOR DEBUGGING */
     private void displayFps(Canvas canvas, String fps) {
 
         if (canvas != null && fps != null) {
@@ -154,6 +169,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             paint.setARGB(255, 255, 255, 255);
             canvas.drawText(fps, this.getWidth() - 100, 100, paint);
         }
+    }
+
+    /* FOR DEBUGGING */
+    public void setAvgFps(String avgFps) {
+
+        this.avgFps = avgFps;
     }
 
 }

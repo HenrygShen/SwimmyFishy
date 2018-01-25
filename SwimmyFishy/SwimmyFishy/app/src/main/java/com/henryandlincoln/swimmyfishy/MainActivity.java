@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,65 +17,48 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    public static final String PREFS_NAME = "Settings";
-    private static final int MAX_VOLUME = 100;
+    private static final String PREFS_NAME = "Settings";
     private long lastClickTime = 0;
     private String highScore = "-1";
-    private int sfxVolume;
-    private int bgmVolume;
-    private MediaPlayer mediaPlayer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        /* Remove status,title bar and lock screen to portrait */
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-
-        /* Hides the status bar */
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         /* Read and load settings using SharedPreferences */
         loadSettings();
         configurePlayButton();
         configureOptionsButton();
         configureCharacterSelButton();
 
-        mediaPlayer = MediaPlayer.create(this,R.raw.bgm);
-        mediaPlayer.setVolume(0.5f,0.5f);
-        mediaPlayer.start();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
 
-        /* Update these values according to the SharedPreferences when this activity resumes */
-        sfxVolume = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getInt("sfxVolume",30);
-        bgmVolume = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getInt("bgmVolume",30);
+        /* Load high score when activity resumes */
         highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0");
-
-        setVolume(mediaPlayer,bgmVolume);
-
-        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-        }
     }
 
     @Override
     protected void onStop(){
-
         super.onStop();
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+
     }
 
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        sfxVolume = settings.getInt("sfxVolume",0);
-        bgmVolume = settings.getInt("bgmVolume",0);
         highScore = settings.getString("highScore","N/A");
         TextView tv = (TextView) findViewById(R.id.high_score);
         tv.setText(highScore);
@@ -95,7 +79,6 @@ public class MainActivity extends Activity {
 
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                setVolume(soundEffectButton,sfxVolume);
                 soundEffectButton.start();
 
                 /* Start the game */
@@ -120,7 +103,6 @@ public class MainActivity extends Activity {
 
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                setVolume(soundEffectButton,sfxVolume);
                 soundEffectButton.start();
 
                 /* Start the Options activity */
@@ -140,7 +122,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view){
 
-                setVolume(soundEffectButton,sfxVolume);
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+                    return;
+                }
+
+                lastClickTime = SystemClock.elapsedRealtime();
+
                 soundEffectButton.start();
 
                 /* Open the character select screen */
@@ -150,11 +137,6 @@ public class MainActivity extends Activity {
             }
         });
 
-    }
-
-    private void setVolume(MediaPlayer mp,int currentVolume){
-        float volume = (1 - (float)(Math.log(MAX_VOLUME - currentVolume + 1)/Math.log(MAX_VOLUME)));
-        mp.setVolume(volume,volume);
     }
 
 }
