@@ -2,7 +2,6 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
-
 import java.text.DecimalFormat;
 import android.util.Log;
 
@@ -41,6 +40,7 @@ public class GameThread extends Thread {
         try {
             canvas = this.surfaceHolder.lockCanvas();
             this.gameView.update();
+            this.gameView.getCharacter().resetAngle();
             this.gameView.draw(canvas);
         }
         finally {
@@ -52,9 +52,8 @@ public class GameThread extends Thread {
 
     @Override
     public void run()  {
-        Canvas canvas;
 
-        Log.d(TAG, "Starting game loop");
+        Canvas canvas;
 
         // initialise timing elements for stat gathering
         initTimingElements();
@@ -81,11 +80,11 @@ public class GameThread extends Thread {
                     this.gameView.update();
                     this.gameView.draw(canvas);
 
-                    /* Sleep time is dependent on the update and draw cycle period */
-                    timeDiff = System.currentTimeMillis() - beginTime;
+                    // Sleep time is dependent on the update and draw cycle period
+                    /*timeDiff = System.currentTimeMillis() - beginTime;
                     sleepTime = (int)(FRAME_PERIOD - timeDiff);
-                    if (sleepTime > 0) {
-                        /* Send the thread to sleep to keep FPS constant, in case UPS>FPS */
+                   if (sleepTime > 0) {
+                        //Send the thread to sleep to keep FPS constant, in case UPS>FPS
                         try {
                             Thread.sleep(sleepTime);
                         }
@@ -95,21 +94,22 @@ public class GameThread extends Thread {
 
                     while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS) {
 
-                        /* Catch up on updates */
-                       // gameView.update();
+                        //Catch up on updates
+                        gameView.update();
                         sleepTime += FRAME_PERIOD;
                         framesSkipped++;
                     }
 
+
                     if (framesSkipped > 0) {
 
                         Log.d(TAG, "Skipped:" + framesSkipped);
-                    }
+                    }*/
 
-                    /* Temporary code for fps checking */
-                    framesSkippedPerStatCycle += framesSkipped;
-                   // storeStats();
-                    /* Temporary code for fps checking */
+                    //Temporary code for fps checking
+                    //framesSkippedPerStatCycle += framesSkipped;
+                    //storeStats();
+
                 }
             }
             finally {

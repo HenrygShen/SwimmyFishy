@@ -6,23 +6,22 @@ import java.util.Random;
 
 public class Pipe implements GameObject {
 
-    GameView gameView;
     private Bitmap upPipe;
+    private Bitmap downPipe;
+
     private int upPipeY;
     private int downPipeY;
+    private final int spriteWidth;
+    private final int spriteHeight;
+    private final int SCREEN_WIDTH;
     private int x;
-    private int y;
-    private int upPipeHeight;
-    private Bitmap downPipe;
-    private int SCREEN_WIDTH;
+
     private boolean drawPipe;
-    private int pipeWidth;
-    private int pipeHeight;
+
     private boolean initialDraw;
-    private int SCREEN_HEIGHT;
+
     private final int UP_LIMIT;
     private final int DOWN_LIMIT;
-    private final int spriteHeight;
 
     public Pipe(Bitmap image, int x, int y, int SCREEN_WIDTH,int SCREEN_HEIGHT){
 
@@ -30,13 +29,12 @@ public class Pipe implements GameObject {
         this.x = x;
         drawPipe = false;
         initialDraw = true;
-        pipeWidth = image.getWidth()/2;
-        pipeHeight = image.getHeight()/2;
-
-
-        upPipe = Bitmap.createBitmap(image,0*image.getWidth()/2,0,image.getWidth()/2,image.getHeight());
-        downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,image.getWidth()/2,image.getHeight());
+        spriteWidth = image.getWidth()/2;
         spriteHeight = image.getHeight();
+
+        upPipe = Bitmap.createBitmap(image,0*image.getWidth()/2,0,spriteWidth,spriteHeight);
+        downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,spriteWidth,spriteHeight);
+
         DOWN_LIMIT = SCREEN_HEIGHT /4;
         UP_LIMIT = SCREEN_HEIGHT * 3/5;
     }
@@ -53,7 +51,7 @@ public class Pipe implements GameObject {
             }
         }
 
-        if (this.x <= - pipeWidth){
+        if (this.x <= - spriteWidth){
             this.x = xPos + SCREEN_WIDTH * 7/8;
             drawPipe = true;
             initialDraw = true;

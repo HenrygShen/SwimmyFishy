@@ -47,6 +47,7 @@ public class Fish implements GameObject {
         this.x = x;
         this.y = y;
 
+
         /* Set up flap animation and pass into animation manager which will play the animation 5 times per second */
         Bitmap[] flapAnim = new Bitmap[SPRITE_SHEET_COLS];
         for (int i =0;i<SPRITE_SHEET_COLS;i++) {
@@ -111,6 +112,13 @@ public class Fish implements GameObject {
 
         state = FLAP;
         VELOCITY = - 6.0f;
+    }
+
+    public void resetAngle(){
+        this.angle = 0;
+        this.matrix.reset();
+        this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
+        this.matrix.postTranslate(100,y);
     }
 }
 
