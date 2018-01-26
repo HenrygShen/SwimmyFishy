@@ -15,6 +15,7 @@ public class Pipe implements GameObject {
     private final int spriteHeight;
     private final int SCREEN_WIDTH;
     private int x;
+    private int SCALE;
 
     private boolean drawPipe;
 
@@ -31,6 +32,7 @@ public class Pipe implements GameObject {
         initialDraw = true;
         spriteWidth = image.getWidth()/2;
         spriteHeight = image.getHeight();
+        SCALE = SCREEN_WIDTH/1080;
 
         upPipe = Bitmap.createBitmap(image,0*image.getWidth()/2,0,spriteWidth,spriteHeight);
         downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,spriteWidth,spriteHeight);
@@ -41,7 +43,7 @@ public class Pipe implements GameObject {
 
     public void update(int xPos){
 
-        this.x -= 10;
+        this.x -= 10*SCALE;
         if (drawPipe) {
             if (initialDraw){
                 Random rand = new Random();

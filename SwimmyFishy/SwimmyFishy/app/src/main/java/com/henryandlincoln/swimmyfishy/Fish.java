@@ -30,6 +30,7 @@ public class Fish implements GameObject {
     private float angle;
     private STATE state;
     private Matrix matrix;
+    private int SCALE;
     private final Animation flapAnimation;
     private final AnimationManager animationManager;
 
@@ -46,7 +47,7 @@ public class Fish implements GameObject {
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.x = x;
         this.y = y;
-
+        SCALE = SCREEN_WIDTH/1080;
 
         /* Set up flap animation and pass into animation manager which will play the animation 5 times per second */
         Bitmap[] flapAnim = new Bitmap[SPRITE_SHEET_COLS];
@@ -60,8 +61,7 @@ public class Fish implements GameObject {
 
     @Override
     public void update() {
-
-        VELOCITY += GRAVITY;
+        VELOCITY += GRAVITY * SCALE;
         distance = VELOCITY * 3.0f;
 
         this.y +=  (int) distance;
