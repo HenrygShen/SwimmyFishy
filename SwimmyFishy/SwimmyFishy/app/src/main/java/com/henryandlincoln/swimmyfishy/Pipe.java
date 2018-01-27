@@ -75,7 +75,10 @@ public class Pipe implements GameObject {
 
     public void update(int xPos){
 
+        /* Pipe moves at a velocity that is relative to the screen width */
         this.x -= 10*SCALE;
+
+        /* Sets up the pipe to be drawn with random heights */
         if (drawPipe) {
             if (initialDraw){
                 upPipeY = rand.nextInt(UP_LIMIT) + DOWN_LIMIT;
@@ -84,12 +87,12 @@ public class Pipe implements GameObject {
             }
         }
 
+        /* Resets the pipe to be drawn starting off screen */
         if (this.x <= - spriteWidth){
             this.x = xPos + SCREEN_WIDTH * 7/8;
             drawPipe = true;
             initialDraw = true;
         }
-
     }
 
 
@@ -102,8 +105,10 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(upPipe,x,upPipeY,null);
 
             /* Draw rectangle for debugging */
-            canvas.drawRect(downRect.x,downRect.y,downRect.x + downRect.width, downRect.y + downRect.height,paint);
-            canvas.drawRect(upRect.x,upRect.y,upRect.x + upRect.width, upRect.y + upRect.height,paint);
+            if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
+                canvas.drawRect(downRect.x, downRect.y, downRect.x + downRect.width, downRect.y + downRect.height, paint);
+                canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
+            }
         }
     }
 
@@ -155,9 +160,4 @@ public class Pipe implements GameObject {
 
     }
 
-    public float getWidth(){
-
-        return this.spriteWidth;
-
-    }
 }
