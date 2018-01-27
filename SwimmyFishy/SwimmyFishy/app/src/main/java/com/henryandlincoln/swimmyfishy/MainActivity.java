@@ -22,7 +22,6 @@ public class MainActivity extends Activity {
     private String highScore;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
