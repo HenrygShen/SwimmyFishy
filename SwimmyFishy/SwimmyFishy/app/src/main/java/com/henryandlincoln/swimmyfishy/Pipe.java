@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import java.util.Random;
 
@@ -26,7 +27,8 @@ public class Pipe implements GameObject {
     private boolean initialDraw;
 
     private Rectangle fish;
-    private Rectangle thisRect;
+    private Rectangle upRect;
+    private Rectangle downRect;
 
     private Random rand;
 
@@ -50,7 +52,8 @@ public class Pipe implements GameObject {
 
         /* Create rectangles to compare for object collision */
         fish = new Rectangle();
-        thisRect = new Rectangle();
+        upRect = new Rectangle();
+        downRect = new Rectangle();
 
         /* The pipe moving in the x axis will have its speed adjusted according to the screen width */
         this.SCALE = SCREEN_WIDTH/1080.f;
@@ -89,6 +92,7 @@ public class Pipe implements GameObject {
 
     }
 
+
     @Override
     public void draw(Canvas canvas){
 
@@ -98,7 +102,8 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(upPipe,x,upPipeY,null);
 
             /* Draw rectangle for debugging */
-            canvas.drawRect(thisRect.x,thisRect.y,thisRect.x + thisRect.width, thisRect.y + thisRect.height,paint);
+            canvas.drawRect(downRect.x,downRect.y,downRect.x + downRect.width, downRect.y + downRect.height,paint);
+            canvas.drawRect(upRect.x,upRect.y,upRect.x + upRect.width, upRect.y + upRect.height,paint);
         }
     }
 
@@ -115,29 +120,44 @@ public class Pipe implements GameObject {
 
     public boolean checkCollision(int x,int y){
 
-        int yUpper = this.upPipeY - spriteHeight/5;
+        upRect.x = this.x;
+        upRect.y = upPipeY;
 
-        thisRect.x = this.x;
-        thisRect.y = yUpper;
-        thisRect.height = this.upPipeY - yUpper;
+        downRect.x = this.x;
+        downRect.y = downPipeY;
 
         fish.x = x;
         fish.y = y;
 
-        return thisRect.intersects(fish);
+        return (upRect.intersects(fish) || downRect.intersects(fish));
 
     }
 
     public void setUpCollisionChecking(float fishWidth,float fishHeight){
 
-        thisRect.width = spriteWidth;
-        thisRect.height = spriteHeight;
+        upRect.width = spriteWidth;
+        upRect.height = spriteHeight;
+
+        downRect.width = spriteWidth;
+        downRect.height = spriteHeight;
+
         fish.width = fishWidth;
         fish.height = fishHeight;
     }
 
+    public boolean offScreen(){
+
+        return this.initialDraw;
+    }
+
     @Override
     public void update(){
+
+    }
+
+    public float getWidth(){
+
+        return this.spriteWidth;
 
     }
 }

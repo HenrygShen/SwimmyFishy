@@ -92,12 +92,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         playerCharacter.draw(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
 
-        if (pipes.get(0).getX() <= (playerCharacter.getX() + playerCharacter.getWidth())){
+        /* Only check for collisions when the pipe is drawn to the screen */
+        if (!pipes.get(0).offScreen()){
             if (pipes.get(0).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
                 playerCharacter.setState(Fish.STATE.DEAD);
             }
         }
-        else if (pipes.get(1).getX() <= (playerCharacter.getX() + playerCharacter.getWidth())) {
+        else if (!pipes.get(1).offScreen()) {
             if (pipes.get(1).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
                 playerCharacter.setState(Fish.STATE.DEAD);
             }
