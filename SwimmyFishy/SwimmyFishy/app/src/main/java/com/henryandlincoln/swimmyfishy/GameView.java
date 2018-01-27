@@ -1,5 +1,6 @@
 package com.henryandlincoln.swimmyfishy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -91,6 +92,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         playerCharacter.draw(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
 
+        if (pipes.get(0).getX() <= (playerCharacter.getX() + playerCharacter.getWidth())){
+            if (pipes.get(0).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
+                playerCharacter.setState(Fish.STATE.DEAD);
+            }
+        }
+        else if (pipes.get(1).getX() <= (playerCharacter.getX() + playerCharacter.getWidth())) {
+            if (pipes.get(1).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
+                playerCharacter.setState(Fish.STATE.DEAD);
+            }
+        }
+
+        if (playerCharacter.getState() == Fish.STATE.DEAD){
+           ((Activity) this.getContext()).finish();
+        }
         //displayFps(canvas, avgFps);
     }
 
@@ -104,6 +119,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         loadFishCharacter();
         loadPipes();
         gameThread.firstDraw();
+        for (Pipe p : pipes){
+            p.setUpCollisionChecking(playerCharacter.getWidth(),playerCharacter.getHeight());
+        }
 
     }
 
@@ -153,7 +171,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         int characterChoice = this.game.getCharacter();
         Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),characterChoice);
-        this.playerCharacter = new Fish(fishBitMap,100,SCREEN_HEIGHT*1/3,SCREEN_WIDTH,SCREEN_HEIGHT);
+        this.playerCharacter = new Fish(fishBitMap,100,SCREEN_HEIGHT/3,SCREEN_WIDTH,SCREEN_HEIGHT);
     }
 
     private void loadPipes(){

@@ -2,7 +2,9 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 
 import static com.henryandlincoln.swimmyfishy.Fish.STATE.*;
 
@@ -12,7 +14,8 @@ public class Fish implements GameObject {
     enum STATE {
 
         FLAP,
-        ABILITY
+        ABILITY,
+        DEAD
     }
 
     private static float VELOCITY = 0.1f;
@@ -20,12 +23,15 @@ public class Fish implements GameObject {
 
     private int x;
     private int y;
+
     private final int SCREEN_HEIGHT;
     private final int SCREEN_WIDTH;
     private final int spriteWidth;
     private final int spriteHeight;
+
     private static final int SPRITE_SHEET_ROWS = 1;
     private static final int SPRITE_SHEET_COLS = 2;
+
     private float distance;
     private float angle;
     private STATE state;
@@ -35,6 +41,8 @@ public class Fish implements GameObject {
 
     private final Animation flapAnimation;
     private final AnimationManager animationManager;
+
+    private Paint paint;
 
 
     public Fish(Bitmap spriteSheet, int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT) {
@@ -49,6 +57,7 @@ public class Fish implements GameObject {
         this.x = x;
         this.y = y;
 
+        this.state = FLAP;
         this.SCALE = SCREEN_HEIGHT/1920.f;
         this.GRAVITY *= SCALE;
         this.VELOCITY *=SCALE;
@@ -60,7 +69,11 @@ public class Fish implements GameObject {
         }
         this.flapAnimation = new Animation(flapAnim,0.2f);
         animationManager = new AnimationManager(flapAnimation);
+        paint = new Paint();
 
+        paint.setColor(Color.GREEN);
+        paint.setStrokeWidth(10);
+        paint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -80,6 +93,7 @@ public class Fish implements GameObject {
         else if (this.y >= SCREEN_HEIGHT*5/6 - spriteHeight){
             this.y = (SCREEN_HEIGHT*5/6 - spriteHeight);
             //angle = 90;
+            this.state = DEAD;
         }
 
         this.rotate(angle);
@@ -96,9 +110,16 @@ public class Fish implements GameObject {
     }
 
     @Override
+    public int getY(){
+        return this.y;
+    }
+
+    @Override
     public void draw(Canvas canvas){
 
+
         animationManager.draw(canvas,matrix);
+        canvas.drawRect(this.x,this.y,this.x+spriteWidth,this.y+spriteHeight,paint);
 
     }
 
@@ -112,7 +133,6 @@ public class Fish implements GameObject {
 
     }
 
-
     public void jump()  {
 
         state = FLAP;
@@ -125,6 +145,27 @@ public class Fish implements GameObject {
         this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
         this.matrix.postTranslate(100,y);
     }
+
+    public STATE getState() {
+
+        return this.state;
+    }
+
+    public void setState(STATE state){
+        this.state = state;
+    }
+
+    public float getWidth(){
+
+        return spriteWidth;
+    }
+
+    public float getHeight(){
+
+        return spriteWidth;
+    }
+
+
 }
 
 

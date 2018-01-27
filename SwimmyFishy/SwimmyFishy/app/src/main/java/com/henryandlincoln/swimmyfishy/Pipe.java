@@ -2,6 +2,9 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import java.util.Random;
 
 public class Pipe implements GameObject {
@@ -14,18 +17,26 @@ public class Pipe implements GameObject {
     private final int spriteWidth;
     private final int spriteHeight;
     private final int SCREEN_WIDTH;
+
     private int x;
 
     private final float SCALE;
 
     private boolean drawPipe;
-
     private boolean initialDraw;
+
+    private Rectangle fish;
+    private Rectangle thisRect;
+
+    private Random rand;
 
     private final int UP_LIMIT;
     private final int DOWN_LIMIT;
 
+    private Paint paint;
+
     public Pipe(Bitmap image, int x, int y, int SCREEN_WIDTH,int SCREEN_HEIGHT){
+
 
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.x = x;
@@ -34,13 +45,29 @@ public class Pipe implements GameObject {
         spriteWidth = image.getWidth()/2;
         spriteHeight = image.getHeight();
 
+        /* Create random number generator */
+        rand = new Random();
+
+        /* Create rectangles to compare for object collision */
+        fish = new Rectangle();
+        thisRect = new Rectangle();
+
+        /* The pipe moving in the x axis will have its speed adjusted according to the screen width */
         this.SCALE = SCREEN_WIDTH/1080.f;
 
+        /* Create an image each of the pipe facing up and facing down, from the original sprite sheet */
         upPipe = Bitmap.createBitmap(image,0*image.getWidth()/2,0,spriteWidth,spriteHeight);
         downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,spriteWidth,spriteHeight);
 
+        /* Set the limits of how high the pipes will be */
         DOWN_LIMIT = SCREEN_HEIGHT /4;
         UP_LIMIT = SCREEN_HEIGHT * 3/5;
+
+        /* Create paint for debugging (for object collision algorithm) */
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(10);
+        paint.setStyle(Paint.Style.STROKE);
     }
 
     public void update(int xPos){
@@ -48,7 +75,6 @@ public class Pipe implements GameObject {
         this.x -= 10*SCALE;
         if (drawPipe) {
             if (initialDraw){
-                Random rand = new Random();
                 upPipeY = rand.nextInt(UP_LIMIT) + DOWN_LIMIT;
                 downPipeY = (int)(upPipeY -  spriteHeight* 1.2);
                 initialDraw = false;
@@ -65,18 +91,53 @@ public class Pipe implements GameObject {
 
     @Override
     public void draw(Canvas canvas){
+
         if (drawPipe){
+            /* Draw both pipes */
             canvas.drawBitmap(downPipe,x, downPipeY, null);
             canvas.drawBitmap(upPipe,x,upPipeY,null);
+
+            /* Draw rectangle for debugging */
+            canvas.drawRect(thisRect.x,thisRect.y,thisRect.x + thisRect.width, thisRect.y + thisRect.height,paint);
         }
+    }
+
+    @Override
+    public int getX(){
+        return this.x;
+    }
+
+    @Override
+    public int getY(){
+        return this.upPipeY;
+    }
+
+
+    public boolean checkCollision(int x,int y){
+
+        int yUpper = this.upPipeY - spriteHeight/5;
+
+        thisRect.x = this.x;
+        thisRect.y = yUpper;
+        thisRect.height = this.upPipeY - yUpper;
+
+        fish.x = x;
+        fish.y = y;
+
+        return thisRect.intersects(fish);
+
+    }
+
+    public void setUpCollisionChecking(float fishWidth,float fishHeight){
+
+        thisRect.width = spriteWidth;
+        thisRect.height = spriteHeight;
+        fish.width = fishWidth;
+        fish.height = fishHeight;
     }
 
     @Override
     public void update(){
 
-    }
-    @Override
-    public int getX(){
-        return this.x;
     }
 }
