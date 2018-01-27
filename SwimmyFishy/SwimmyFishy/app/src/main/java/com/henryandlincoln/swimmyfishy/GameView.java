@@ -98,7 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 playerCharacter.setState(Fish.STATE.DEAD);
             }
         }
-        else if (!pipes.get(1).offScreen()) {
+        if (!pipes.get(1).offScreen()) {
             if (pipes.get(1).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
                 playerCharacter.setState(Fish.STATE.DEAD);
             }
