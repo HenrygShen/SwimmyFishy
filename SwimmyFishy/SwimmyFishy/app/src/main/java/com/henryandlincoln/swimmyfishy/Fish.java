@@ -30,7 +30,9 @@ public class Fish implements GameObject {
     private float angle;
     private STATE state;
     private Matrix matrix;
-    private int SCALE;
+
+    private final float SCALE;
+
     private final Animation flapAnimation;
     private final AnimationManager animationManager;
 
@@ -40,14 +42,16 @@ public class Fish implements GameObject {
         /* Create new matrix that rotates fish when it is falling */
         matrix = new Matrix();
 
-
         spriteWidth = spriteSheet.getWidth()/SPRITE_SHEET_COLS;
         spriteHeight = spriteSheet.getHeight()/SPRITE_SHEET_ROWS;
         this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.x = x;
         this.y = y;
-        SCALE = SCREEN_WIDTH/1080;
+
+        this.SCALE = SCREEN_HEIGHT/1920.f;
+        this.GRAVITY *= SCALE;
+        this.VELOCITY *=SCALE;
 
         /* Set up flap animation and pass into animation manager which will play the animation 5 times per second */
         Bitmap[] flapAnim = new Bitmap[SPRITE_SHEET_COLS];
@@ -61,7 +65,8 @@ public class Fish implements GameObject {
 
     @Override
     public void update() {
-        VELOCITY += GRAVITY * SCALE;
+
+        VELOCITY += GRAVITY;
         distance = VELOCITY * 3.0f;
 
         this.y +=  (int) distance;
@@ -111,7 +116,7 @@ public class Fish implements GameObject {
     public void jump()  {
 
         state = FLAP;
-        VELOCITY = - 6.0f;
+        VELOCITY = - 7.0f * SCALE;
     }
 
     public void resetAngle(){
