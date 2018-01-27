@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 
 public class MainActivity extends Activity {
@@ -37,15 +37,18 @@ public class MainActivity extends Activity {
         loadSettings();
         configurePlayButton();
         configureCharacterSelButton();
+        configureHighScore();
 
     }
 
     @Override
     protected void onResume(){
+
         super.onResume();
 
         /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","N/A");
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","12345");
+
     }
 
     @Override
@@ -57,7 +60,7 @@ public class MainActivity extends Activity {
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        highScore = settings.getString("highScore","N/A");
+        highScore = settings.getString("highScore","12345");
     }
 
     private void configurePlayButton(){
@@ -109,6 +112,53 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    public int getDigit(char digit){
+
+        switch (digit){
+            case '1' :
+                return R.drawable.one;
+            case '2' :
+                return R.drawable.two;
+            case '3' :
+                return R.drawable.three;
+            case '4' :
+                return R.drawable.four;
+            case '5' :
+                return R.drawable.five;
+            case '6' :
+                return R.drawable.six;
+            case '7' :
+                return R.drawable.seven;
+            case '8' :
+                return R.drawable.eight;
+            case '9' :
+                return R.drawable.nine;
+            default :
+                return R.drawable.empty_number;
+        }
+    }
+
+    private void configureHighScore(){
+
+        ImageView highScoreTxt = (ImageView) findViewById(R.id.high_score);
+        highScoreTxt.setImageResource(R.drawable.high_score);
+
+        ImageView digit = (ImageView) findViewById(R.id.digit1);
+        digit.setImageResource(getDigit(highScore.charAt(0)));
+
+        digit = (ImageView) findViewById(R.id.digit2);
+        digit.setImageResource(getDigit(highScore.charAt(1)));
+
+        digit = (ImageView) findViewById(R.id.digit3);
+        digit.setImageResource(getDigit(highScore.charAt(2)));
+
+        digit = (ImageView) findViewById(R.id.digit4);
+        digit.setImageResource(getDigit(highScore.charAt(3)));
+
+        digit = (ImageView) findViewById(R.id.digit5);
+        digit.setImageResource(getDigit(highScore.charAt(4)));
     }
 
 }

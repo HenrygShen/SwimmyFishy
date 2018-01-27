@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+>
+
+
+    <ImageView
+        android:id="@+id/high_score"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="19dp"
+        app:srcCompat="@drawable/high_score" />
+
+    <ImageView
+        android:id="@+id/digit1"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/high_score"
+        android:layout_toEndOf="@+id/high_score"
+        app:srcCompat="@drawable/empty_number" />
+
+    <ImageView
+        android:id="@+id/digit2"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/digit1"
+        android:layout_toEndOf="@+id/digit1"
+        app:srcCompat="@drawable/empty_number" />
+
+    <ImageView
+        android:id="@+id/digit3"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/play"
+        android:layout_toEndOf="@+id/digit2"
+        app:srcCompat="@drawable/empty_number" />
+
+    <ImageView
+        android:id="@+id/digit4"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/digit3"
+        android:layout_toEndOf="@+id/digit3"
+        app:srcCompat="@drawable/empty_number" />
+
+    <ImageView
+        android:id="@+id/digit5"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/digit4"
+        android:layout_toEndOf="@+id/digit4"
+        app:srcCompat="@drawable/empty_number" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/high_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="159dp"
+        android:background="@drawable/button_play" />
+
+    <Button
+        android:id="@+id/characterSelect"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:layout_alignStart="@+id/play"
+        android:layout_below="@+id/play"
+        android:layout_marginTop="73dp"
+        android:background="@drawable/button_char_select" />
+</RelativeLayout>

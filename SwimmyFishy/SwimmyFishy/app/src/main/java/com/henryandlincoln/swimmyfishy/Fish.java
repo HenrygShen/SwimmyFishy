@@ -118,7 +118,6 @@ public class Fish implements GameObject {
 
     @Override
     public int getX() {
-
         return this.x;
     }
 
@@ -129,7 +128,6 @@ public class Fish implements GameObject {
 
     @Override
     public void draw(Canvas canvas){
-
 
         animationManager.draw(canvas,matrix);
         canvas.drawRect(this.x,this.y,this.x+spriteWidth,this.y+spriteHeight,paint);
@@ -153,6 +151,7 @@ public class Fish implements GameObject {
     }
 
     public void resetAngle(){
+
         this.angle = 0;
         this.matrix.reset();
         this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
@@ -165,6 +164,7 @@ public class Fish implements GameObject {
     }
 
     public void setState(STATE state){
+
         this.state = state;
     }
 
