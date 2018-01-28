@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         super.onResume();
 
         /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","12345");
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","26   ");
 
     }
 
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        highScore = settings.getString("highScore","12345");
+        highScore = settings.getString("highScore","26   ");
     }
 
     private void configurePlayButton(){
@@ -104,7 +104,6 @@ public class MainActivity extends Activity {
                 lastClickTime = SystemClock.elapsedRealtime();
 
                 soundEffectButton.start();
-
                 /* Open the character select screen */
                 Intent i = new Intent(MainActivity.this,CharacterSelectActivity.class);
                 startActivity(i);
@@ -159,6 +158,7 @@ public class MainActivity extends Activity {
 
         digit = (ImageView) findViewById(R.id.digit5);
         digit.setImageResource(getDigit(highScore.charAt(4)));
+
     }
 
 }

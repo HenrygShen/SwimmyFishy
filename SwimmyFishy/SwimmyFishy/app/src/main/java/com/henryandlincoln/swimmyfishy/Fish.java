@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-
+import java.util.ArrayList;
 import static com.henryandlincoln.swimmyfishy.Fish.STATE.*;
 
 
@@ -13,17 +13,11 @@ public class Fish implements GameObject {
 
     enum STATE {
 
-        FLAP,
         ALIVE,
         DEAD
     }
 
-    private static float VELOCITY = 0.1f;
-    private static float GRAVITY = 0.5f;
-
-    private int x;
-    private int y;
-
+    /* Variables for the initialisation of the object */
     private final int SCREEN_HEIGHT;
     private final int SCREEN_WIDTH;
     private final int spriteWidth;
@@ -32,20 +26,29 @@ public class Fish implements GameObject {
 
     private static final int SPRITE_SHEET_ROWS = 1;
     private static final int SPRITE_SHEET_COLS = 2;
+    /* ---------------------------------------------- */
 
+    private static float VELOCITY = 0.1f;
+    private static float GRAVITY = 0.5f;
+
+    private STATE state;
     private float distance;
     private float angle;
     private Matrix matrix;
 
-    private STATE state = ALIVE;
+    private int x;
+    private int y;
 
-    private final Animation flapAnimation;
     private final AnimationManager animationManager;
 
+    /* Hit-box plus hit-box colour */
+    private Rectangle fishHitBox;
     private Paint paint;
 
 
     public Fish(Bitmap spriteSheet, int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT) {
+
+        this.state = ALIVE;
 
         /* Create new matrix that rotates fish when it is falling */
         matrix = new Matrix();
@@ -63,12 +66,17 @@ public class Fish implements GameObject {
         this.GRAVITY *= SCALE;
         this.VELOCITY *=SCALE;
 
+        /* Set up the hit box rectangle for player */
+        fishHitBox = new Rectangle();
+        fishHitBox.width = spriteWidth*17/20;
+        fishHitBox.height = spriteHeight*17/20;
+
         /* Set up flap animation and pass into animation manager which will play the animation 5 times per second */
         Bitmap[] flapAnim = new Bitmap[SPRITE_SHEET_COLS];
         for (int i =0;i<SPRITE_SHEET_COLS;i++) {
             flapAnim[i] = Bitmap.createBitmap(spriteSheet, (i* spriteWidth), 0, spriteWidth, spriteHeight);
         }
-        this.flapAnimation = new Animation(flapAnim,0.2f);
+        Animation flapAnimation = new Animation(flapAnim,0.2f);
         animationManager = new AnimationManager(flapAnimation);
 
         /* Paint for rectangle drawn around fish for debugging */
@@ -76,6 +84,53 @@ public class Fish implements GameObject {
         paint.setColor(Color.GREEN);
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
+    }
+
+
+    public void checkCollision(GameObject object){
+
+        /* Update the game hit-box ONLY when this collision-checking method is called */
+        fishHitBox.x = x;
+        fishHitBox.y = y;
+
+        /* An object may have multiple hit-boxes, such as a pair of pipes.
+        Therefore we use an array list to get all the hit-boxes of one object */
+        ArrayList<Rectangle> hitBox = object.getHitBox();
+        for (Rectangle hb : hitBox) {
+            if (fishHitBox.intersects(hb)){
+                this.state = DEAD;
+            }
+        }
+    }
+
+    /* Method for rotating the fish character */
+    private void rotate(float angle){
+
+        angle = (angle>= 90) ? 90 : angle;
+
+        this.matrix.reset();
+        this.matrix.setRotate(angle,spriteWidth/2,spriteHeight/2);
+        this.matrix.postTranslate(100,y);
+    }
+
+    /* Method for accelerating the fish upwards(jumping) */
+    public void jump()  {
+
+        VELOCITY = - 7.0f * SCALE;
+    }
+
+    /* A public method used by the game thread to reset the angle of the fish character on first draw of the game screen */
+    public void resetAngle(){
+
+        this.angle = 0;
+        this.matrix.reset();
+        this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
+        this.matrix.postTranslate(100,y);
+    }
+
+    public STATE getState() {
+
+        return this.state;
     }
 
     @Override
@@ -117,6 +172,15 @@ public class Fish implements GameObject {
     }
 
     @Override
+    public void draw(Canvas canvas){
+
+        animationManager.draw(canvas,matrix);
+
+        /* Draw the hit-box for debugging */
+        canvas.drawRect(this.x,this.y,this.x+spriteWidth,this.y+spriteHeight,paint);
+    }
+
+    @Override
     public int getX() {
         return this.x;
     }
@@ -127,57 +191,15 @@ public class Fish implements GameObject {
     }
 
     @Override
-    public void draw(Canvas canvas){
+    public ArrayList<Rectangle> getHitBox(){
 
-        animationManager.draw(canvas,matrix);
-        canvas.drawRect(this.x,this.y,this.x+spriteWidth,this.y+spriteHeight,paint);
-
+       return new ArrayList<>();
     }
 
-    private void rotate(float angle){
-
-        angle = (angle>= 90) ? 90 : angle;
-
-        this.matrix.reset();
-        this.matrix.setRotate(angle,spriteWidth/2,spriteHeight/2);
-        this.matrix.postTranslate(100,y);
-
+    @Override
+    public boolean offScreen(){
+        return true;
     }
-
-    public void jump()  {
-
-        state = FLAP;
-        VELOCITY = - 7.0f * SCALE;
-    }
-
-    public void resetAngle(){
-
-        this.angle = 0;
-        this.matrix.reset();
-        this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
-        this.matrix.postTranslate(100,y);
-    }
-
-    public STATE getState() {
-
-        return this.state;
-    }
-
-    public void setState(STATE state){
-
-        this.state = state;
-    }
-
-    public float getWidth(){
-
-        return spriteWidth;
-    }
-
-    public float getHeight(){
-
-        return spriteWidth;
-    }
-
 
 }
 

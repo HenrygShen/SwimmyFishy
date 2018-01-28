@@ -11,25 +11,18 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.ArrayList;
-
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     private GameThread gameThread;
     private Game game;
 
-    private Fish playerCharacter;
-    private ArrayList<Pipe> pipes = new ArrayList<>();
     private Bitmap bg_base;
     private Paint paint;
 
     private int SCREEN_HEIGHT;
     private int SCREEN_WIDTH;
     private boolean firstTouch;
-
-    /* FOR DEBUGGING */
-    private String avgFps;
 
     public GameView(Context context,Game game) {
 
@@ -48,14 +41,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         /* Set this variable to stall game thread and only start after the first touch */
         firstTouch = true;
 
-
     }
 
     public void update()  {
 
-       pipes.get(0).update(pipes.get(1).getX()-10);
-       pipes.get(1).update(pipes.get(0).getX());
-       playerCharacter.update();
+        if (!game.gameOver()){
+            game.updateGameState();
+        }
+        else {
+            /* Show end of game screen */
+            ((Activity) this.getContext()).finish();
+        }
+
     }
 
 
@@ -67,11 +64,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 firstTouch = false;
                 this.gameThread.setRunning(true);
                 this.gameThread.start();
-                this.playerCharacter.jump();
+                game.getFish().jump();
                 return true;
             }
             else {
-                this.playerCharacter.jump();
+                game.getFish().jump();
                 return true;
             }
         }
@@ -84,30 +81,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         canvas.drawPaint(paint);
-
-        for (Pipe p : pipes){
-            p.draw(canvas);
-        }
-
-        playerCharacter.draw(canvas);
+        game.drawObjects(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
+        game.checkCollisions();
 
-        /* Only check for collisions when the pipe is drawn to the screen */
-        if (!pipes.get(0).offScreen()){
-            if (pipes.get(0).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
-                playerCharacter.setState(Fish.STATE.DEAD);
-            }
-        }
-        if (!pipes.get(1).offScreen()) {
-            if (pipes.get(1).checkCollision(playerCharacter.getX(),playerCharacter.getY())){
-                playerCharacter.setState(Fish.STATE.DEAD);
-            }
-        }
+    }
 
-        if (playerCharacter.getState() == Fish.STATE.DEAD){
-           ((Activity) this.getContext()).finish();
-        }
-        //displayFps(canvas, avgFps);
+    private void setBackgrounds(){
+
+        paint = new Paint();
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.FILL);
+        bg_base  = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
+        bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
+    }
+
+    public Fish getCharacter(){
+
+        return game.getFish();
     }
 
     @Override
@@ -117,12 +108,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.SCREEN_WIDTH = this.getWidth();
 
         setBackgrounds();
-        loadFishCharacter();
-        loadPipes();
+        game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT);
         gameThread.firstDraw();
-        for (Pipe p : pipes){
-            p.setUpCollisionChecking(playerCharacter.getWidth(),playerCharacter.getHeight());
-        }
 
     }
 
@@ -149,7 +136,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-
     public void stopThread(){
 
         boolean retry= true;
@@ -166,54 +152,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-    }
-
-    private void loadFishCharacter(){
-
-        int characterChoice = this.game.getCharacter();
-        Bitmap fishBitMap = BitmapFactory.decodeResource(this.getResources(),characterChoice);
-        fishBitMap = Bitmap.createScaledBitmap(fishBitMap, fishBitMap.getWidth() * SCREEN_WIDTH/1350,fishBitMap.getHeight() * SCREEN_HEIGHT/2400,false);
-        this.playerCharacter = new Fish(fishBitMap,100,SCREEN_HEIGHT/3,SCREEN_WIDTH,SCREEN_HEIGHT);
-    }
-
-    private void loadPipes(){
-
-        Bitmap pipeBitMap = BitmapFactory.decodeResource(this.getResources(),R.drawable.pipes);
-        pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_HEIGHT/3,SCREEN_HEIGHT,false);
-        for (int i =0 ;i <2;i++){
-            Pipe p  = new Pipe(pipeBitMap,i*this.getWidth()*7/8,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-            pipes.add(p);
-        }
-    }
-
-    private void setBackgrounds(){
-
-        paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
-        bg_base  = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
-        bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
-    }
-
-    public Fish getCharacter(){
-
-        return this.playerCharacter;
-    }
-
-    /* FOR DEBUGGING */
-    private void displayFps(Canvas canvas, String fps) {
-
-        if (canvas != null && fps != null) {
-            Paint paint = new Paint();
-            paint.setARGB(255, 255, 255, 255);
-            canvas.drawText(fps, this.getWidth() - 100, 100, paint);
-        }
-    }
-
-    /* FOR DEBUGGING */
-    public void setAvgFps(String avgFps) {
-
-        this.avgFps = avgFps;
     }
 
 }

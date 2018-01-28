@@ -24,11 +24,12 @@ public class GameActivity extends Activity {
 
         /* Load the character choice into the Game object, then pass into the game view to use */
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
-        int character = settings.getInt("character",R.drawable.catfish);
+        int characterType = settings.getInt("character",R.drawable.catfish);
 
         /* Create game object to pass into the game view, which will load the settings */
-        Game game = new Game();
-        game.setCharacter(character);
+        Game game = new Game(this);
+        game.setCharacterType(characterType);
+
         gameView = new GameView(this,game);
         setContentView(gameView);
     }
