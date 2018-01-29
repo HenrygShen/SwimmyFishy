@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         super.onResume();
 
         /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","26   ");
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0   ");
 
     }
 
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        highScore = settings.getString("highScore","26   ");
+        highScore = settings.getString("highScore","0xxxx");
     }
 
     private void configurePlayButton(){
@@ -116,6 +116,8 @@ public class MainActivity extends Activity {
     public int getDigit(char digit){
 
         switch (digit){
+            case '0' :
+                return R.drawable.zero;
             case '1' :
                 return R.drawable.one;
             case '2' :
@@ -146,6 +148,7 @@ public class MainActivity extends Activity {
 
         ImageView digit = (ImageView) findViewById(R.id.digit1);
         digit.setImageResource(getDigit(highScore.charAt(0)));
+
 
         digit = (ImageView) findViewById(R.id.digit2);
         digit.setImageResource(getDigit(highScore.charAt(1)));

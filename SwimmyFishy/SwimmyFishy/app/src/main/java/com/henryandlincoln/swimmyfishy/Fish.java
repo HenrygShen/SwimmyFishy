@@ -28,8 +28,8 @@ public class Fish implements GameObject {
     private static final int SPRITE_SHEET_COLS = 2;
     /* ---------------------------------------------- */
 
-    private static float VELOCITY = 0.1f;
-    private static float GRAVITY = 0.5f;
+    private static float VELOCITY;
+    private static float GRAVITY;
 
     private STATE state;
     private float distance;
@@ -63,8 +63,8 @@ public class Fish implements GameObject {
 
         /* Scale all values pertaining to fish movement */
         this.SCALE = SCREEN_HEIGHT/1920.f;
-        this.GRAVITY *= SCALE;
-        this.VELOCITY *=SCALE;
+        GRAVITY = 0.5f * SCALE;
+        VELOCITY = 0.1f * SCALE;
 
         /* Set up the hit box rectangle for player */
         fishHitBox = new Rectangle();

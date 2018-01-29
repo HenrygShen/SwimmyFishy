@@ -26,6 +26,13 @@ public class GameActivity extends Activity {
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
         int characterType = settings.getInt("character",R.drawable.catfish);
 
+
+        /* -------------------*/
+        //settings.edit().putString("highScore","20000").apply();
+        /* -------------------*/
+
+
+
         /* Create game object to pass into the game view, which will load the settings */
         Game game = new Game(this);
         game.setCharacterType(characterType);

@@ -98,7 +98,7 @@ public class Pipe implements GameObject {
 
         /* Resets the pipe to be drawn starting off screen */
         if (this.x <= - spriteWidth){
-            this.x = xPos + SCREEN_WIDTH * 7/8;
+            this.x = xPos + SCREEN_WIDTH * 3/4;
             drawPipe = true;
             initialDraw = true;
         }
