@@ -20,6 +20,7 @@ public class Game {
     private ArrayList<Pipe> pipes;
     private ArrayList<GameObject> objects;
     private int level;
+    private int highScore;
 
     public Game(Context context) {
 
@@ -27,20 +28,26 @@ public class Game {
         this.pipes = new ArrayList<>();
         this.objects = new ArrayList<>();
         this.level = 0;
+        int currentHighScore;
+        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        String currentScoreString = settings.getString("highScore","0");
+        while (!(Character.isDigit(currentScoreString.charAt(currentScoreString.length()-1)))){
+            currentScoreString = currentScoreString.substring(0,currentScoreString.length()-1);
+        }
 
+        currentHighScore = Integer.parseInt(currentScoreString);
+        this.highScore = currentHighScore;
     }
 
     public void createGame(int SCREEN_WIDTH, int SCREEN_HEIGHT, double physicalScreenWidth, double physicalScreenHeight){
 
         /* Create the player character */
         Bitmap fishBitMap = BitmapFactory.decodeResource(context.getResources(),characterType);
-        //fishBitMap = Bitmap.createScaledBitmap(fishBitMap, fishBitMap.getWidth() * SCREEN_WIDTH/1350,fishBitMap.getHeight() * SCREEN_HEIGHT/2400,false);
-
         fishBitMap = Bitmap.createScaledBitmap(fishBitMap, (int)(fishBitMap.getWidth() * physicalScreenWidth/2.8312587 * 3/4),(int)(fishBitMap.getHeight() * physicalScreenHeight/5.033349 *3/4),false);
         fish =  new Fish(fishBitMap,100,SCREEN_HEIGHT/3,SCREEN_WIDTH,SCREEN_HEIGHT);
+
         /* Create the pipes */
         Bitmap pipeBitMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.pipes);
-        //pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, pipeBitMap.getWidth(),pipeBitMap.getHeight(),false);
         pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_WIDTH*5/12,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
             Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4,0,SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -54,6 +61,7 @@ public class Game {
         fish.update();
         pipes.get(0).update(pipes.get(1).getX()-10);
         pipes.get(1).update(pipes.get(0).getX());
+        updateLevel();
 
     }
 
@@ -73,6 +81,19 @@ public class Game {
             }
         }
     }
+    public void updateLevel(){
+
+        for (Pipe pipe : pipes){
+            if (!pipe.offScreen()){
+                if (pipe.getPassRect().firstIntersect()) {
+                    if (fish.getFishHitBox().intersects(pipe.getPassRect())) {
+                        pipe.getPassRect().setFirstIntersect(false);
+                        level++;
+                    }
+                }
+            }
+        }
+    }
 
     public void setCharacterType(int character) {
 
@@ -81,8 +102,6 @@ public class Game {
 
     public boolean gameOver(){
 
-        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
-        settings.edit().putString("highScore","202xx").apply();
         return (this.getFish().getState() == DEAD);
     }
 
@@ -91,5 +110,17 @@ public class Game {
         return this.fish;
     }
 
+    public int getScore(){
+        return level;
+    }
+
+    public int getPrevHighScore(){
+        return this.highScore;
+    }
+
+    public void setHighScore(String hs){
+        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        settings.edit().putString("highScore",hs).apply();
+    }
 
 }

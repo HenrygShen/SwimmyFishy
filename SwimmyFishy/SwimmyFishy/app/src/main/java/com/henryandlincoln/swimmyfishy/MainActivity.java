@@ -47,7 +47,8 @@ public class MainActivity extends Activity {
         super.onResume();
 
         /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0   ");
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0xxxx");
+        configureHighScore();
 
     }
 

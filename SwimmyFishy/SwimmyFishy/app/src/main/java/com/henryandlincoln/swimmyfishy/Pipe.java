@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,9 +26,9 @@ public class Pipe implements GameObject {
     private boolean drawPipe;
     private boolean initialDraw;
 
-    private Rectangle fish;
     private Rectangle upRect;
     private Rectangle downRect;
+    private Rectangle passRect;
 
     private Random rand;
 
@@ -39,8 +38,10 @@ public class Pipe implements GameObject {
     private ArrayList<Rectangle> hitBoxes;
 
     private Paint paint;
+    private Paint paint2;
 
     public Pipe(Bitmap image, int x, int y, int SCREEN_WIDTH,int SCREEN_HEIGHT){
+
 
 
         this.SCREEN_WIDTH = SCREEN_WIDTH;
@@ -56,13 +57,20 @@ public class Pipe implements GameObject {
         /* Create rectangles to compare for object collision */
         upRect = new Rectangle();
         downRect = new Rectangle();
+        passRect  = new Rectangle();
+
         hitBoxes = new ArrayList<>(2);
         hitBoxes.add(upRect);
         hitBoxes.add(downRect);
+        //hitBoxes.add(passRect);
+
         upRect.width = spriteWidth;
         upRect.height = spriteHeight;
         downRect.width = spriteWidth;
         downRect.height = spriteHeight;
+        passRect.width = spriteWidth;
+        passRect.height = spriteHeight/5;
+
 
         /* The pipe moving in the x axis will have its speed adjusted according to the screen width */
         this.SCALE = SCREEN_WIDTH/1080.f;
@@ -80,6 +88,10 @@ public class Pipe implements GameObject {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
+        paint2 = new Paint();
+        paint2.setColor(Color.YELLOW);
+        paint2.setStrokeWidth(10);
+        paint2.setStyle(Paint.Style.STROKE);
     }
 
     public void update(int xPos){
@@ -96,11 +108,12 @@ public class Pipe implements GameObject {
             }
         }
 
-        /* Resets the pipe to be drawn starting off screen */
+        /* Resets the pipe to be drawn starting off screen on the right side */
         if (this.x <= - spriteWidth){
             this.x = xPos + SCREEN_WIDTH * 3/4;
             drawPipe = true;
             initialDraw = true;
+            passRect.setFirstIntersect(true);
         }
     }
 
@@ -114,14 +127,18 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(downPipe,x, downPipeY, null);
             canvas.drawBitmap(upPipe,x,upPipeY,null);
 
-            /* Draw rectangle for debugging */
+            /* Draw hit box for debugging */
             if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
                 upRect.x = this.x;
                 upRect.y = upPipeY;
                 downRect.x = this.x;
                 downRect.y = downPipeY;
+                passRect.x = this.x;
+                passRect.y = downPipeY  + spriteHeight;
                 canvas.drawRect(downRect.x, downRect.y, downRect.x + downRect.width, downRect.y + downRect.height, paint);
                 canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
+                canvas.drawRect(passRect.x, passRect.y,passRect.x + passRect.width, passRect.y + passRect.height,paint2);
+
             }
         }
     }
@@ -133,12 +150,20 @@ public class Pipe implements GameObject {
         upRect.y = upPipeY;
         downRect.x = this.x;
         downRect.y = downPipeY;
+        passRect.x = this.x;
+        passRect.y = downPipeY + spriteHeight;
 
         hitBoxes.set(0,upRect);
         hitBoxes.set(1,downRect);
 
         return hitBoxes;
     }
+
+    public Rectangle getPassRect(){
+
+        return passRect;
+    }
+
 
     @Override
     public int getX(){
@@ -152,7 +177,6 @@ public class Pipe implements GameObject {
 
     @Override
     public boolean offScreen(){
-
         return this.initialDraw;
     }
 
@@ -160,5 +184,7 @@ public class Pipe implements GameObject {
     public void update(){
 
     }
+
+
 
 }

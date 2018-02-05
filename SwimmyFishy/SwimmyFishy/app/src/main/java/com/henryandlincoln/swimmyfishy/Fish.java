@@ -133,10 +133,15 @@ public class Fish implements GameObject {
         return this.state;
     }
 
+    public Rectangle getFishHitBox(){
+
+        return this.fishHitBox;
+    }
+
     @Override
     public void update() {
 
-        /* Velocity increases with every update cycle */
+        /* Velocity increases with every update cycle -> v = u + at */
         VELOCITY += GRAVITY;
 
         /* Distance updated according to velocity */
@@ -159,7 +164,6 @@ public class Fish implements GameObject {
         else if (this.y >= SCREEN_HEIGHT*5/6 - spriteHeight){
             this.y = (SCREEN_HEIGHT*5/6 - spriteHeight);
             this.state = DEAD;
-            //angle = 90;
         }
 
         /* Update the matrix which rotates the fish according to its current angle */

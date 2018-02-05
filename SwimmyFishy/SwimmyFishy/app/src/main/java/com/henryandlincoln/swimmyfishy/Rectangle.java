@@ -7,17 +7,10 @@ public class Rectangle {
     public int y;
     public float width;
     public float height;
+    private boolean firstIntersect;
 
     public Rectangle(){
-
-    }
-
-    public void setX(int x){
-        this.x = x;
-    }
-
-    public void setY(int y){
-        this.y = y;
+        firstIntersect = true;
     }
 
     public void setWidth(float width){
@@ -31,5 +24,15 @@ public class Rectangle {
     public boolean intersects(Rectangle other){
 
         return (this.x < (other.x + other.width) && (this.x + this.width) > other.x && this.y < (other.y  + other.height) && (this.y +  this.height) > other.y );
+    }
+
+    public boolean firstIntersect(){
+
+        return this.firstIntersect;
+    }
+
+    public void setFirstIntersect(boolean firstIntersect){
+
+        this.firstIntersect = firstIntersect;
     }
 }

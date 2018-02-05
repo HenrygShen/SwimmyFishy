@@ -2,6 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,6 +26,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int SCREEN_WIDTH;
     private boolean firstTouch;
 
+
+    private Paint textPaint = new Paint();
+
     public GameView(Context context,Game game) {
 
         super(context);
@@ -43,8 +47,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         firstTouch = true;
 
 
-
-
     }
 
     public void update()  {
@@ -53,9 +55,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             game.updateGameState();
         }
         else {
-            /* Show end of game screen */
 
-            //((Activity) this.getContext()).finish();
+            /* Show end of game screen */
+            int score = game.getScore();
+            int currentHighScore = game.getPrevHighScore();
+            if (currentHighScore < score) {
+                String highScore = Integer.toString(score);
+                while (highScore.length() < 5){
+                    highScore = highScore + "x";
+                }
+                game.setHighScore(highScore);
+            }
+            ((Activity) this.getContext()).finish();
         }
 
     }
@@ -109,7 +120,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
-                /* Set up the resolution values */
+        /* Set up the resolution values */
         this.SCREEN_HEIGHT = this.getHeight();
         this.SCREEN_WIDTH = this.getWidth();
 
@@ -170,7 +181,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
-
     }
+
 
 }
