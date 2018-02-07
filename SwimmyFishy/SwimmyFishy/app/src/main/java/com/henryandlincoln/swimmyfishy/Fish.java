@@ -110,7 +110,7 @@ public class Fish implements GameObject {
 
         this.matrix.reset();
         this.matrix.setRotate(angle,spriteWidth/2,spriteHeight/2);
-        this.matrix.postTranslate(100,y);
+        this.matrix.postTranslate(x,y);
     }
 
     /* Method for accelerating the fish upwards(jumping) */
@@ -125,7 +125,7 @@ public class Fish implements GameObject {
         this.angle = 0;
         this.matrix.reset();
         this.matrix.setRotate(0,spriteWidth/2,spriteHeight/2);
-        this.matrix.postTranslate(100,y);
+        this.matrix.postTranslate(x,y);
     }
 
     public STATE getState() {
