@@ -1,5 +1,6 @@
 package com.henryandlincoln.swimmyfishy;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -173,6 +174,10 @@ public class Pipe implements GameObject {
     @Override
     public int getY(){
         return this.upPipeY;
+    }
+
+    public int getWidth(){
+        return this.spriteWidth;
     }
 
     @Override

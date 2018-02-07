@@ -20,7 +20,6 @@ public class Game {
     private ArrayList<Pipe> pipes;
     private ArrayList<GameObject> objects;
     private int level;
-    private int highScore;
 
     public Game(Context context) {
 
@@ -28,15 +27,7 @@ public class Game {
         this.pipes = new ArrayList<>();
         this.objects = new ArrayList<>();
         this.level = 0;
-        int currentHighScore;
-        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
-        String currentScoreString = settings.getString("highScore","0");
-        while (!(Character.isDigit(currentScoreString.charAt(currentScoreString.length()-1)))){
-            currentScoreString = currentScoreString.substring(0,currentScoreString.length()-1);
-        }
 
-        currentHighScore = Integer.parseInt(currentScoreString);
-        this.highScore = currentHighScore;
     }
 
     public void createGame(int SCREEN_WIDTH, int SCREEN_HEIGHT, double physicalScreenWidth, double physicalScreenHeight){
@@ -44,7 +35,7 @@ public class Game {
         /* Create the player character */
         Bitmap fishBitMap = BitmapFactory.decodeResource(context.getResources(),characterType);
         fishBitMap = Bitmap.createScaledBitmap(fishBitMap, (int)(fishBitMap.getWidth() * physicalScreenWidth/2.8312587 * 3/4),(int)(fishBitMap.getHeight() * physicalScreenHeight/5.033349 *3/4),false);
-        fish =  new Fish(fishBitMap,100,SCREEN_HEIGHT/3,SCREEN_WIDTH,SCREEN_HEIGHT);
+        fish =  new Fish(fishBitMap,SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH,SCREEN_HEIGHT);
 
         /* Create the pipes */
         Bitmap pipeBitMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.pipes);
@@ -88,7 +79,9 @@ public class Game {
                 if (pipe.getPassRect().firstIntersect()) {
                     if (fish.getFishHitBox().intersects(pipe.getPassRect())) {
                         pipe.getPassRect().setFirstIntersect(false);
-                        level++;
+                        //if (pipe.getX() + pipe.getWidth() < fish.getX()) {
+                            level++;
+                        //}
                     }
                 }
             }
@@ -115,7 +108,15 @@ public class Game {
     }
 
     public int getPrevHighScore(){
-        return this.highScore;
+
+        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        String currentScoreString = settings.getString("highScore","0");
+        while (!(Character.isDigit(currentScoreString.charAt(currentScoreString.length()-1)))){
+            currentScoreString = currentScoreString.substring(0,currentScoreString.length()-1);
+        }
+
+        return Integer.parseInt(currentScoreString);
+
     }
 
     public void setHighScore(String hs){
