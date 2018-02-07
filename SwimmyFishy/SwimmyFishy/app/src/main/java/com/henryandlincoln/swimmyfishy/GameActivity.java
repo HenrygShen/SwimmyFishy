@@ -1,6 +1,7 @@
 package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -32,10 +33,12 @@ public class GameActivity extends Activity {
 
         gameView = new GameView(this,game);
         setContentView(gameView);
+
+
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         gameView.stopThread();
     }
@@ -55,6 +58,13 @@ public class GameActivity extends Activity {
     @Override
     public void onBackPressed(){
         super.onBackPressed();
+        finish();
+    }
+
+    public void gameOver(){
+
+        Intent i = new Intent(GameActivity.this,GameOverActivity.class);
+        startActivity(i);
         finish();
     }
 }

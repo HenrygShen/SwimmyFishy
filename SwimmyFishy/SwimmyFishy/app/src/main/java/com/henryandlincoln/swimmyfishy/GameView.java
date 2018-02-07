@@ -2,6 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,7 +26,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int SCREEN_HEIGHT;
     private int SCREEN_WIDTH;
     private boolean firstTouch;
-
 
     private Paint textPaint = new Paint();
 
@@ -66,7 +66,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 game.setHighScore(highScore);
             }
-            ((Activity) this.getContext()).finish();
+            String currentScore = Integer.toString(score);
+            while (currentScore.length() < 5){
+                currentScore = currentScore + "x";
+            }
+            game.setCurrentScore(currentScore);
+
+            ((GameActivity)(this.getContext())).gameOver();
+
         }
 
     }

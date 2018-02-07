@@ -123,4 +123,9 @@ public class Game {
         settings.edit().putString("highScore",hs).apply();
     }
 
+    public void setCurrentScore(String score){
+        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        settings.edit().putString("currentScore",score).apply();
+    }
+
 }
