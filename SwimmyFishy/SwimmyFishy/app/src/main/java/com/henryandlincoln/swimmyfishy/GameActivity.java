@@ -74,6 +74,7 @@ public class GameActivity extends Activity {
                     Game game = new Game(this);
                     SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
                     int characterType = settings.getInt("character",R.drawable.catfish);
+                    game.setCharacterType(characterType);
                     gameView.setGame(game);
                     gameView.restartThread();
                 }

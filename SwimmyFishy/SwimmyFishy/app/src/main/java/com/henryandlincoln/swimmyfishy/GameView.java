@@ -135,7 +135,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         double screenInches = Math.sqrt(x+y);
         double physicalScreenWidth = Math.sqrt(Math.pow(screenInches,2)/((Math.pow(aspectRatio,2)+ 1)));
         double physicalScreenHeight = physicalScreenWidth * aspectRatio;
-
+        firstTouch = true;
         setBackgrounds();
         game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT,physicalScreenWidth,physicalScreenHeight);
         gameThread.firstDraw();
@@ -196,14 +196,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry= true;
         if (this.gameThread.isAlive()) {
             while (retry) {
-                try {
+
                     this.gameThread.setRunning(false);
-                    this.gameThread.join();
+                    this.gameThread.interrupt();
                     retry = false;
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+
             }
         }
     }
