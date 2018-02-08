@@ -48,8 +48,19 @@ public class GameOverActivity extends Activity {
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+
         highScore = settings.getString("highScore","0xxxx");
         currentScore = settings.getString("currentScore", "0xxxx");
+        boolean newHighScoreWasSet = settings.getBoolean("newHighScore",false);
+        ImageView newHighScore = (ImageView) findViewById(R.id.new_high_score);
+
+        if (newHighScoreWasSet){
+            newHighScore.setImageResource(R.drawable.new_high_score_text);
+        }
+        else {
+            newHighScore.setImageResource(R.drawable.empty_text);
+        }
     }
 
     public int getDigit(char digit){
@@ -95,8 +106,6 @@ public class GameOverActivity extends Activity {
         digit = (ImageView) findViewById(R.id.score4);
         digit.setImageResource(getDigit(currentScore.charAt(3)));
 
-        digit = (ImageView) findViewById(R.id.score5);
-        digit.setImageResource(getDigit(currentScore.charAt(4)));
 
         //Digits for Best Score
         digit = (ImageView) findViewById(R.id.best1);
@@ -111,8 +120,6 @@ public class GameOverActivity extends Activity {
         digit = (ImageView) findViewById(R.id.best4);
         digit.setImageResource(getDigit(highScore.charAt(3)));
 
-        digit = (ImageView) findViewById(R.id.best5);
-        digit.setImageResource(getDigit(highScore.charAt(4)));
 
     }
 }

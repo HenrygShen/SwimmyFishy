@@ -119,14 +119,32 @@ public class Game {
 
     }
 
-    public void setHighScore(String hs){
+    public void setHighScore(int hs){
+
+        String highScore = Integer.toString(hs);
+        while (highScore.length() < 5){
+            highScore = highScore + "x";
+        }
         SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
-        settings.edit().putString("highScore",hs).apply();
+        settings.edit().putString("highScore",highScore).apply();
+
     }
 
-    public void setCurrentScore(String score){
+    public void setCurrentScore(int score){
+
+        String currentScore = Integer.toString(score);
+        while (currentScore.length() < 5){
+            currentScore = currentScore + "x";
+        }
         SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
-        settings.edit().putString("currentScore",score).apply();
+        settings.edit().putString("currentScore",currentScore).apply();
+    }
+
+    public void setDisplayNewHighScore(boolean newHighScore){
+
+        SharedPreferences settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        settings.edit().putBoolean("newHighScore",newHighScore).apply();
+
     }
 
 }

@@ -27,7 +27,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int SCREEN_WIDTH;
     private boolean firstTouch;
 
-    private Paint textPaint = new Paint();
 
     public GameView(Context context,Game game) {
 
@@ -56,22 +55,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         else {
 
-            /* Show end of game screen */
-            int score = game.getScore();
-            int currentHighScore = game.getPrevHighScore();
-            if (currentHighScore < score) {
-                String highScore = Integer.toString(score);
-                while (highScore.length() < 5){
-                    highScore = highScore + "x";
-                }
-                game.setHighScore(highScore);
-            }
-            String currentScore = Integer.toString(score);
-            while (currentScore.length() < 5){
-                currentScore = currentScore + "x";
+            /* Configure the new score and set high score if previous one was beaten
+               Load these scores into settings for the game over panel to display */
+            int currentScore = game.getScore();
+            int bestScore = game.getPrevHighScore();
+            if (bestScore < currentScore) {
+                game.setHighScore(currentScore);
             }
             game.setCurrentScore(currentScore);
-
+            game.setDisplayNewHighScore(bestScore<currentScore);
             ((GameActivity)(this.getContext())).gameOver();
 
         }
@@ -158,19 +150,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
 
-        boolean retry= true;
-        if (this.gameThread.isAlive()) {
-            while (retry) {
-                try {
-                    this.gameThread.setRunning(false);
-                    this.gameThread.join();
-                    retry = false;
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+       stopThread();
     }
 
     public void stopThread(){
