@@ -13,6 +13,7 @@ public class GameActivity extends Activity {
     private static final String PREFS_NAME = "Settings";
     private static final int PLAY_AGAIN = 1 ;
     private GameView gameView;
+    private int characterType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class GameActivity extends Activity {
 
         /* Load the character choice into the Game object, then pass into the game view to use */
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
-        int characterType = settings.getInt("character",R.drawable.catfish);
+        characterType = settings.getInt("character",R.drawable.catfish);
 
         /* Create game object to pass into the game view, which will load the settings */
         Game game = new Game(this);
@@ -37,6 +38,13 @@ public class GameActivity extends Activity {
 
     }
 
+    public void gameOver(){
+
+        Intent i = new Intent(GameActivity.this,GameOverActivity.class);
+        startActivityForResult(i,PLAY_AGAIN);
+
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -44,23 +52,9 @@ public class GameActivity extends Activity {
     }
 
     @Override
-    protected void onResume(){
-        super.onResume();
-
-    }
-
-    @Override
     protected void onDestroy(){
         super.onDestroy();
         gameView.stopThread();
-    }
-
-
-    public void gameOver(){
-
-        Intent i = new Intent(GameActivity.this,GameOverActivity.class);
-        startActivityForResult(i,PLAY_AGAIN);
-
     }
 
     @Override
@@ -70,11 +64,10 @@ public class GameActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 boolean playAgain =  getIntent().getBooleanExtra("playAgain",true);
                 if (playAgain){
-                     /* Start the game */
+                     /* Create a new game and send it to the view */
                     Game game = new Game(this);
-                    SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
-                    int characterType = settings.getInt("character",R.drawable.catfish);
                     game.setCharacterType(characterType);
+
                     gameView.setGame(game);
                     gameView.restartThread();
                 }

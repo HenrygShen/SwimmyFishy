@@ -41,23 +41,6 @@ public class MainActivity extends Activity {
 
     }
 
-    @Override
-    protected void onResume(){
-
-        super.onResume();
-
-        /* Load high score when activity resumes */
-        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0xxxx");
-        configureHighScore();
-
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-
-    }
-
     private void loadSettings(){
 
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -73,6 +56,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+                /* Conditional to prevent double click */
                 if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
                     return;
                 }
@@ -98,6 +82,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view){
 
+                 /* Conditional to prevent double click */
                 if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
                     return;
                 }
@@ -114,7 +99,30 @@ public class MainActivity extends Activity {
 
     }
 
-    public int getDigit(char digit){
+    private void configureHighScore(){
+
+        ImageView highScoreTxt = (ImageView) findViewById(R.id.high_score);
+        highScoreTxt.setImageResource(R.drawable.high_score);
+
+        ImageView digit = (ImageView) findViewById(R.id.digit1);
+        digit.setImageResource(getDigit(highScore.charAt(0)));
+
+
+        digit = (ImageView) findViewById(R.id.digit2);
+        digit.setImageResource(getDigit(highScore.charAt(1)));
+
+        digit = (ImageView) findViewById(R.id.digit3);
+        digit.setImageResource(getDigit(highScore.charAt(2)));
+
+        digit = (ImageView) findViewById(R.id.digit4);
+        digit.setImageResource(getDigit(highScore.charAt(3)));
+
+        digit = (ImageView) findViewById(R.id.digit5);
+        digit.setImageResource(getDigit(highScore.charAt(4)));
+
+    }
+
+    private int getDigit(char digit){
 
         switch (digit){
             case '0' :
@@ -142,28 +150,17 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void configureHighScore(){
+    @Override
+    protected void onResume(){
 
-        ImageView highScoreTxt = (ImageView) findViewById(R.id.high_score);
-        highScoreTxt.setImageResource(R.drawable.high_score);
+        super.onResume();
 
-        ImageView digit = (ImageView) findViewById(R.id.digit1);
-        digit.setImageResource(getDigit(highScore.charAt(0)));
-
-
-        digit = (ImageView) findViewById(R.id.digit2);
-        digit.setImageResource(getDigit(highScore.charAt(1)));
-
-        digit = (ImageView) findViewById(R.id.digit3);
-        digit.setImageResource(getDigit(highScore.charAt(2)));
-
-        digit = (ImageView) findViewById(R.id.digit4);
-        digit.setImageResource(getDigit(highScore.charAt(3)));
-
-        digit = (ImageView) findViewById(R.id.digit5);
-        digit.setImageResource(getDigit(highScore.charAt(4)));
+        /* Load high score when activity resumes */
+        highScore = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE).getString("highScore","0xxxx");
+        configureHighScore();
 
     }
+
 
 
 }

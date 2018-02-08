@@ -74,6 +74,8 @@ public class Game {
     }
     public void updateLevel(){
 
+        /* FIX THIS */
+        /* Minor bug where first level is counted before fish intersects the first true hit box */
         for (Pipe pipe : pipes){
             if (!pipe.offScreen()){
                 if (pipe.getPassRect().firstIntersect()) {
