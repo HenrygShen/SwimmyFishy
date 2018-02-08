@@ -135,7 +135,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         double screenInches = Math.sqrt(x+y);
         double physicalScreenWidth = Math.sqrt(Math.pow(screenInches,2)/((Math.pow(aspectRatio,2)+ 1)));
         double physicalScreenHeight = physicalScreenWidth * aspectRatio;
-        firstTouch = true;
         setBackgrounds();
         game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT,physicalScreenWidth,physicalScreenHeight);
         gameThread.firstDraw();
@@ -151,7 +150,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
 
-       //stopThread();
+       stopThread();
     }
 
     public void setGame(Game game){
@@ -185,6 +184,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         double physicalScreenWidth = Math.sqrt(Math.pow(screenInches,2)/((Math.pow(aspectRatio,2)+ 1)));
         double physicalScreenHeight = physicalScreenWidth * aspectRatio;
 
+        firstTouch = true;
+
         setBackgrounds();
         game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT,physicalScreenWidth,physicalScreenHeight);
         gameThread.firstDraw();
@@ -193,16 +194,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void stopThread(){
 
-        boolean retry= true;
         if (this.gameThread.isAlive()) {
-            while (retry) {
 
-                    this.gameThread.setRunning(false);
-                    this.gameThread.interrupt();
-                    retry = false;
-
-
-            }
+            this.gameThread.setRunning(false);
+            this.gameThread.interrupt();
         }
     }
 
