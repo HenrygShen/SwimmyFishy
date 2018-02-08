@@ -43,7 +43,9 @@ public class GameOverActivity extends Activity {
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(GameOverActivity.this,GameActivity.class);
+                Intent i= new Intent(GameOverActivity.this, MainActivity.class);
+                i.putExtra("playAgain",true);
+                setResult(RESULT_OK,i);
                 startActivity(i);
                 finish();
             }
