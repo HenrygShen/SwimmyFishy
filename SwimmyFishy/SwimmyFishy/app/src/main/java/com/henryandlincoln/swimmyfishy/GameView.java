@@ -154,6 +154,43 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
        //stopThread();
     }
 
+    public void setGame(Game game){
+
+        this.game = game;
+    }
+
+    public void restartThread(){
+
+        /* Make it so that this view can handle events */
+        this.setFocusable(true);
+        this.getHolder().addCallback(this);
+
+        /* Create thread to manage updates and drawing to the canvas */
+        this.gameThread = new GameThread(this,this.getHolder());
+
+        /* Set up the resolution values */
+        this.SCREEN_HEIGHT = this.getHeight();
+        this.SCREEN_WIDTH = this.getWidth();
+
+        float aspectRatio = (float)SCREEN_HEIGHT / SCREEN_WIDTH;
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        double wi=(double)width/(double)dm.xdpi;
+        double hi=(double)height/(double)dm.ydpi;
+        double x = Math.pow(wi,2);
+        double y = Math.pow(hi,2);
+        double screenInches = Math.sqrt(x+y);
+        double physicalScreenWidth = Math.sqrt(Math.pow(screenInches,2)/((Math.pow(aspectRatio,2)+ 1)));
+        double physicalScreenHeight = physicalScreenWidth * aspectRatio;
+
+        setBackgrounds();
+        game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT,physicalScreenWidth,physicalScreenHeight);
+        gameThread.firstDraw();
+
+    }
+
     public void stopThread(){
 
         boolean retry= true;

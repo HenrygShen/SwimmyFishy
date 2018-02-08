@@ -11,6 +11,7 @@ import android.view.WindowManager;
 public class GameActivity extends Activity {
 
     private static final String PREFS_NAME = "Settings";
+    private static final int PLAY_AGAIN = 1 ;
     private GameView gameView;
 
     @Override
@@ -58,7 +59,27 @@ public class GameActivity extends Activity {
     public void gameOver(){
 
         Intent i = new Intent(GameActivity.this,GameOverActivity.class);
-        startActivity(i);
+        startActivityForResult(i,PLAY_AGAIN);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode , int resultCode, Intent data){
+        /* Use this to skip this activity and escape to main menu if the button was pressed */
+        if (requestCode == PLAY_AGAIN){
+            if (resultCode == RESULT_OK) {
+                boolean playAgain =  getIntent().getBooleanExtra("playAgain",true);
+                if (playAgain){
+                     /* Start the game */
+                    Game game = new Game(this);
+                    SharedPreferences settings = this.getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+                    int characterType = settings.getInt("character",R.drawable.catfish);
+                    gameView.setGame(game);
+                    gameView.restartThread();
+                }
+            }
+        }
+        super.onActivityResult(requestCode,resultCode,data);
     }
 
 }

@@ -18,7 +18,6 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 
     private static final String PREFS_NAME = "Settings";
-    private static final int PLAY_AGAIN = 1 ;
     private long lastClickTime = 0;
     private String highScore;
 
@@ -84,7 +83,7 @@ public class MainActivity extends Activity {
 
                 /* Start the game */
                 Intent i  = new Intent(MainActivity.this,GameActivity.class);
-                startActivityForResult(i,PLAY_AGAIN);
+                startActivity(i);
             }
         });
     }
@@ -166,21 +165,5 @@ public class MainActivity extends Activity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode , int resultCode, Intent data){
-        /* Use this to skip this activity and escape to main menu if the button was pressed */
-        if (requestCode == PLAY_AGAIN){
-            if (resultCode == RESULT_OK) {
-                boolean playAgain =  getIntent().getBooleanExtra("playAgain",true);
-                if (playAgain){
-                     /* Start the game */
-                    Intent i  = new Intent(MainActivity.this,GameActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivityForResult(i,PLAY_AGAIN);
-                }
-            }
-        }
-        super.onActivityResult(requestCode,resultCode,data);
-    }
 
 }
