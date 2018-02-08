@@ -107,8 +107,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
-        bg_base  = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
-        bg_base  = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
+        bg_base = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_base);
+        bg_base = Bitmap.createScaledBitmap(bg_base,SCREEN_WIDTH,SCREEN_HEIGHT/6,false);
     }
 
     public Fish getCharacter(){

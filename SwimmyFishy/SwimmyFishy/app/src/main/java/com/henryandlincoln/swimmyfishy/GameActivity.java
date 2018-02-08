@@ -34,7 +34,6 @@ public class GameActivity extends Activity {
         gameView = new GameView(this,game);
         setContentView(gameView);
 
-
     }
 
     @Override
@@ -55,11 +54,6 @@ public class GameActivity extends Activity {
         gameView.stopThread();
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        finish();
-    }
 
     public void gameOver(){
 

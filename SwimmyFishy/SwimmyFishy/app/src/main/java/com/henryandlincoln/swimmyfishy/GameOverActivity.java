@@ -2,6 +2,7 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -31,15 +32,33 @@ public class GameOverActivity extends Activity {
 
         loadSettings();
         configureMenuBtn();
+        configurePlayAgainButton();
         configureScoreDigits();
 
     }
 
-    public void configureMenuBtn(){
-        Button menuBtn = (Button) findViewById(R.id.main_menu);
+    public void configurePlayAgainButton(){
+
+        Button menuBtn = (Button) findViewById(R.id.play_again);
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(GameOverActivity.this,GameActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+    }
+    public void configureMenuBtn(){
+
+        Button menuBtn = (Button) findViewById(R.id.back_to_menu);
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(GameOverActivity.this,MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
                 finish();
             }
         });
@@ -120,6 +139,10 @@ public class GameOverActivity extends Activity {
         digit = (ImageView) findViewById(R.id.best4);
         digit.setImageResource(getDigit(highScore.charAt(3)));
 
+    }
+
+    @Override
+    public void onBackPressed(){
 
     }
 }
