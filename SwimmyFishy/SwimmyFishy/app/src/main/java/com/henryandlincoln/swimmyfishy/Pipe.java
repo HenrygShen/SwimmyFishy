@@ -30,6 +30,7 @@ public class Pipe implements GameObject {
     private Rectangle upRect;
     private Rectangle downRect;
     private Rectangle passRect;
+    private int fishWidth;
 
     private Random rand;
 
@@ -70,7 +71,8 @@ public class Pipe implements GameObject {
         downRect.width = spriteWidth;
         downRect.height = spriteHeight;
         passRect.width = spriteWidth;
-        passRect.height = spriteHeight/5;
+        passRect.y = 0;
+        passRect.height = SCREEN_HEIGHT;
 
 
         /* The pipe moving in the x axis will have its speed adjusted according to the screen width */
@@ -129,18 +131,17 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(upPipe,x,upPipeY,null);
 
             /* Draw hit box for debugging */
-            //if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
+            if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
                 upRect.x = this.x;
                 upRect.y = upPipeY;
                 downRect.x = this.x;
                 downRect.y = downPipeY;
-                passRect.x = this.x;
-                passRect.y = downPipeY  + spriteHeight;
+                passRect.x = this.x + fishWidth + spriteWidth;
                 canvas.drawRect(downRect.x, downRect.y, downRect.x + downRect.width, downRect.y + downRect.height, paint);
                 canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
                 canvas.drawRect(passRect.x, passRect.y,passRect.x + passRect.width, passRect.y + passRect.height,paint2);
 
-            //}
+            }
         }
     }
 
@@ -152,7 +153,6 @@ public class Pipe implements GameObject {
         downRect.x = this.x;
         downRect.y = downPipeY;
         passRect.x = this.x;
-        passRect.y = downPipeY + spriteHeight;
 
         hitBoxes.set(0,upRect);
         hitBoxes.set(1,downRect);
@@ -163,6 +163,10 @@ public class Pipe implements GameObject {
     public Rectangle getPassRect(){
 
         return passRect;
+    }
+
+    public void setFishWidth(int fishWidth){
+        this.fishWidth = fishWidth;
     }
 
 

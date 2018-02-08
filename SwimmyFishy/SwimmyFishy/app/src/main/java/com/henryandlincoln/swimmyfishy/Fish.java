@@ -194,6 +194,10 @@ public class Fish implements GameObject {
         return this.y;
     }
 
+    public int getSpriteWidth(){
+        return spriteWidth;
+    }
+
     @Override
     public ArrayList<Rectangle> getHitBox(){
 
