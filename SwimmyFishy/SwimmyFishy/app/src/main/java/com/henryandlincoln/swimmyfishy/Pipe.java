@@ -129,7 +129,7 @@ public class Pipe implements GameObject {
             canvas.drawBitmap(upPipe,x,upPipeY,null);
 
             /* Draw hit box for debugging */
-            if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
+            //if (this.x >= 0 && this.x <= SCREEN_WIDTH) {
                 upRect.x = this.x;
                 upRect.y = upPipeY;
                 downRect.x = this.x;
@@ -140,7 +140,7 @@ public class Pipe implements GameObject {
                 canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
                 canvas.drawRect(passRect.x, passRect.y,passRect.x + passRect.width, passRect.y + passRect.height,paint2);
 
-            }
+            //}
         }
     }
 
