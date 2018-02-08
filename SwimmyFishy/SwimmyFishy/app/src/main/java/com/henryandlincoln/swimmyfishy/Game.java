@@ -41,7 +41,7 @@ public class Game {
         Bitmap pipeBitMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.pipes);
         pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_WIDTH*5/12,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
-            Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+            Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4 + 150,0,SCREEN_WIDTH,SCREEN_HEIGHT);
             this.objects.add(p);
             pipes.add(p);
         }

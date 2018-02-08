@@ -81,8 +81,8 @@ public class Pipe implements GameObject {
         downPipe = Bitmap.createBitmap(image,image.getWidth()/2,0,spriteWidth,spriteHeight);
 
         /* Set the limits of how high the pipes will be */
-        DOWN_LIMIT = SCREEN_HEIGHT /4;
-        UP_LIMIT = SCREEN_HEIGHT * 3/5;
+        DOWN_LIMIT = SCREEN_HEIGHT / 4;
+        UP_LIMIT = SCREEN_HEIGHT / 2;
 
         /* Create paint for debugging (for object collision algorithm) */
         paint = new Paint();
