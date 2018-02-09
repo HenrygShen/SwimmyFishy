@@ -27,6 +27,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int SCREEN_WIDTH;
     private boolean firstTouch;
 
+    private Paint textPaint;
+
 
     public GameView(Context context,Game game) {
 
@@ -44,6 +46,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         /* Set this variable to stall game thread and only start after the first touch */
         firstTouch = true;
+
+        textPaint = new Paint();
+        textPaint.setColor(Color.RED);
+        textPaint.setStyle(Paint.Style.FILL);
+
+        textPaint.setTextSize(100);
+
 
 
     }
@@ -99,6 +108,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         game.drawObjects(canvas);
         canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
         game.checkCollisions();
+        canvas.drawText("" + game.getScore(), 100, 100, textPaint);
 
     }
 
@@ -190,6 +200,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         game.createGame(SCREEN_WIDTH,SCREEN_HEIGHT,physicalScreenWidth,physicalScreenHeight);
         gameThread.firstDraw();
 
+    }
+
+    public Game getGame(){
+        return this.game;
     }
 
     public void stopThread(){
