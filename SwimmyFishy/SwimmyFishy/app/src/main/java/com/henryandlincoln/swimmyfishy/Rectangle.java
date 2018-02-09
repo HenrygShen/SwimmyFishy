@@ -23,7 +23,16 @@ public class Rectangle {
 
     public boolean intersects(Rectangle other){
 
-        return (this.x < (other.x + other.width) && (this.x + this.width) > other.x && this.y < (other.y  + other.height) && (this.y +  this.height) > other.y );
+        if (this.x > (other.x + other.width) || other.x > (this.x + this.width)){
+            return false;
+        }
+
+        if (this.y > (other.y + other.height) || other.y > (this.y + this.height)){
+            return false;
+        }
+        return true;
+
+        //return (this.x < (other.x + other.width) && (this.x + this.width) > other.x && this.y < (other.y  + other.height) && (this.y +  this.height) > other.y );
     }
 
     public boolean firstIntersect(){
@@ -34,5 +43,13 @@ public class Rectangle {
     public void setFirstIntersect(boolean firstIntersect){
 
         this.firstIntersect = firstIntersect;
+    }
+
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getX(){
+        return this.x;
     }
 }

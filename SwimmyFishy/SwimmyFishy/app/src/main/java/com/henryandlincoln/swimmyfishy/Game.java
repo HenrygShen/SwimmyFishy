@@ -43,7 +43,7 @@ public class Game {
         Bitmap pipeBitMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.pipes);
         pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_WIDTH*5/12,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
-            Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4 + 150 + fishWidth,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+            Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4,0,SCREEN_WIDTH,SCREEN_HEIGHT);
             p.setFishWidth(fishWidth);
             this.objects.add(p);
             pipes.add(p);
@@ -82,7 +82,8 @@ public class Game {
         for (Pipe pipe : pipes){
             if (!pipe.offScreen()){
                 if (pipe.getPassRect().firstIntersect()) {
-                    if (fish.getFishHitBox().intersects(pipe.getPassRect())) {
+                    /* Temporary changes to test scoring system*/
+                    if (fish.getFishHitBox().getX() > (pipe.getPassRect().getX()  + fish.getSpriteWidth())) {
                         pipe.getPassRect().setFirstIntersect(false);
                         level++;
                     }

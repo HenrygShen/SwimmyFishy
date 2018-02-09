@@ -136,13 +136,15 @@ public class Pipe implements GameObject {
                 upRect.y = upPipeY;
                 downRect.x = this.x;
                 downRect.y = downPipeY;
-                passRect.x = this.x + fishWidth + spriteWidth;
+                //passRect.setX(this.x + fishWidth);
                 canvas.drawRect(downRect.x, downRect.y, downRect.x + downRect.width, downRect.y + downRect.height, paint);
                 canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
                 canvas.drawRect(passRect.x, passRect.y,passRect.x + passRect.width, passRect.y + passRect.height,paint2);
 
             }
         }
+        passRect.setX(this.x + fishWidth);
+        //canvas.drawRect(passRect.getX(), passRect.y,(passRect.getX() + passRect.width), (passRect.y + passRect.height),paint2);
     }
 
     @Override
