@@ -35,4 +35,12 @@ public class Rectangle {
 
         this.firstIntersect = firstIntersect;
     }
+
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getX(){
+        return this.x;
+    }
 }
