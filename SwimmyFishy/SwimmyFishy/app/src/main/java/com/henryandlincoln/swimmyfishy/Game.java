@@ -17,6 +17,7 @@ public class Game {
     /* Variables relating to game objects */
     private int characterType;
     private Fish fish;
+    private PowerUp PowUp;
     private ArrayList<Pipe> pipes;
     private ArrayList<GameObject> objects;
     private int level;
@@ -48,33 +49,49 @@ public class Game {
             this.objects.add(p);
             pipes.add(p);
         }
+        /* Create the Power Up */
+        Bitmap powUpImage = BitmapFactory.decodeResource(context.getResources(),R.drawable.power_up);
+        powUpImage = Bitmap.createScaledBitmap(powUpImage, (int)(powUpImage.getWidth() * physicalScreenWidth/2.8312587 * 3/4),(int)(powUpImage.getHeight() * physicalScreenHeight/5.033349 *3/4),false);
+        PowUp = new PowerUp(powUpImage,(SCREEN_WIDTH + 500),(SCREEN_HEIGHT*3/4),SCREEN_WIDTH,SCREEN_HEIGHT);
+        this.objects.add(PowUp);
     }
 
     public void updateGameState(){
 
         fish.update();
+        PowUp.update();
         pipes.get(0).update(pipes.get(1).getX()-10);
         pipes.get(1).update(pipes.get(0).getX());
+        for (Pipe p: pipes){
+            if (p.offScreen()){
+                if ((level%3 == 0) && (level != 0)){
+                    PowUp.spawnPowUp(p.getX());
+                }
+            }
+        }
         updateLevel();
 
     }
 
     public void drawObjects(Canvas canvas) {
 
-        for (Pipe p : pipes){
-            p.draw(canvas);
+        for (Pipe object : pipes){
+            object.draw(canvas);
         }
         fish.draw(canvas);
+        PowUp.draw(canvas);
     }
 
     public void checkCollisions(){
 
         for (GameObject object : objects){
             if (!object.offScreen()){
-                fish.checkCollision(object);
+                fish.checkCollision(object, false);
             }
         }
+
     }
+
     public void updateLevel(){
 
         /* FIX THIS */

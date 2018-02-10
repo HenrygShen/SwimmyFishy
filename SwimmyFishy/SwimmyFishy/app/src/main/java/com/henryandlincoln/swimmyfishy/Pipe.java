@@ -196,6 +196,8 @@ public class Pipe implements GameObject {
 
     }
 
-
-
+    @Override
+    public boolean isPowerUp() {
+        return false;
+    }
 }

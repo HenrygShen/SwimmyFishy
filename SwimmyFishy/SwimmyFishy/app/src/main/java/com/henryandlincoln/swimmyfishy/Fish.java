@@ -87,7 +87,7 @@ public class Fish implements GameObject {
     }
 
 
-    public void checkCollision(GameObject object){
+    public void checkCollision(GameObject object, boolean isPowerUp){
 
         /* Update the game hit-box ONLY when this collision-checking method is called */
         fishHitBox.x = x;
@@ -98,7 +98,12 @@ public class Fish implements GameObject {
         ArrayList<Rectangle> hitBox = object.getHitBox();
         for (Rectangle hb : hitBox) {
             if (fishHitBox.intersects(hb)){
-                this.state = DEAD;
+                if (!isPowerUp) {
+                    this.state = DEAD;
+                }
+                else{
+                    /* TODO */
+                }
             }
         }
     }
@@ -207,6 +212,11 @@ public class Fish implements GameObject {
     @Override
     public boolean offScreen(){
         return true;
+    }
+
+    @Override
+    public boolean isPowerUp(){
+        return false;
     }
 
 }
