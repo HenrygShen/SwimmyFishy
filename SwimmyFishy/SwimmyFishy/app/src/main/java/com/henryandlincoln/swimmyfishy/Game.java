@@ -43,7 +43,7 @@ public class Game {
         Bitmap pipeBitMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.pipes);
         pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_WIDTH*5/12,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
-            Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4 + 150 + fishWidth,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+            Pipe p  = new Pipe(pipeBitMap,(i+1)*SCREEN_WIDTH*3/4 + 150 ,0,SCREEN_WIDTH,SCREEN_HEIGHT);
             p.setFishWidth(fishWidth);
             this.objects.add(p);
             pipes.add(p);
@@ -80,7 +80,7 @@ public class Game {
         /* FIX THIS */
         /* Minor bug where first level is counted before fish intersects the first true hit box */
         for (Pipe pipe : pipes){
-            if (!pipe.offScreen()){
+            if (!pipe.offScreen()) {
                 if (pipe.getPassRect().firstIntersect()) {
                     if (fish.getFishHitBox().intersects(pipe.getPassRect())) {
                         pipe.getPassRect().setFirstIntersect(false);
@@ -88,6 +88,7 @@ public class Game {
                     }
                 }
             }
+
         }
     }
 
