@@ -14,6 +14,7 @@ public class Fish implements GameObject {
     enum STATE {
 
         ALIVE,
+        SHIELD,
         DEAD
     }
 
@@ -99,10 +100,19 @@ public class Fish implements GameObject {
         for (Rectangle hb : hitBox) {
             if (fishHitBox.intersects(hb)){
                 if (!isPowerUp) {
-                    this.state = DEAD;
+                    if (this.state == SHIELD){
+                        this.state = ALIVE;
+                        paint.setColor(Color.GREEN);
+                        hb.setFirstIntersect(false);
+                    }
+                    else if(hb.firstIntersect()){
+                        this.state = DEAD;
+                    }
                 }
                 else{
                     /* TODO */
+                    this.state = SHIELD;
+                    paint.setColor(Color.WHITE);
                 }
             }
         }

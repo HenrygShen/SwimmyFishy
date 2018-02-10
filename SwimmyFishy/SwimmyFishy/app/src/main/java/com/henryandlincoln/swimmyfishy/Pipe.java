@@ -116,6 +116,8 @@ public class Pipe implements GameObject {
             this.x = xPos + SCREEN_WIDTH * 3/4;
             drawPipe = true;
             initialDraw = true;
+            upRect.setFirstIntersect(true);
+            downRect.setFirstIntersect(true);
             passRect.setFirstIntersect(true);
         }
     }
@@ -136,15 +138,13 @@ public class Pipe implements GameObject {
                 upRect.y = upPipeY;
                 downRect.x = this.x;
                 downRect.y = downPipeY;
-                //passRect.setX(this.x + fishWidth);
+                passRect.x = this.x + fishWidth;
                 canvas.drawRect(downRect.x, downRect.y, downRect.x + downRect.width, downRect.y + downRect.height, paint);
                 canvas.drawRect(upRect.x, upRect.y, upRect.x + upRect.width, upRect.y + upRect.height, paint);
                 canvas.drawRect(passRect.x, passRect.y,passRect.x + passRect.width, passRect.y + passRect.height,paint2);
 
             }
         }
-        passRect.setX(this.x + fishWidth);
-        //canvas.drawRect(passRect.getX(), passRect.y,(passRect.getX() + passRect.width), (passRect.y + passRect.height),paint2);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class Pipe implements GameObject {
         upRect.y = upPipeY;
         downRect.x = this.x;
         downRect.y = downPipeY;
-        passRect.x = this.x;
+        passRect.x = this.x + fishWidth;
 
         hitBoxes.set(0,upRect);
         hitBoxes.set(1,downRect);

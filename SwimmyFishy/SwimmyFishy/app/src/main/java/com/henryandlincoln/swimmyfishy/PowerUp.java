@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.View;
 
 import java.util.ArrayList;
 
@@ -44,22 +43,24 @@ public class PowerUp implements GameObject {
 
         powerUp = Bitmap.createBitmap(image,0,0,spriteWidth,spriteHeight);
 
-        hitBoxes = new ArrayList<>(1);
+        hitBoxes = new ArrayList<>();
 
         /* Create a rectangle to compare for object collision */
         powerUpHitBox = new Rectangle();
-        hitBoxes.add(powerUpHitBox);
         powerUpHitBox.width = spriteWidth*17/20;
         powerUpHitBox.height = spriteHeight*17/20;
+        powerUpHitBox.x = x;
+        powerUpHitBox.y = y;
+        hitBoxes.add(powerUpHitBox);
 
         /* Scale all values pertaining to object movement */
         this.SCALE = SCREEN_HEIGHT/1920.f;
         GRAVITY = 0.05f * SCALE;
         VELOCITY = 0.f;
 
-        /* Paint for rectangle drawn around fish for debugging */
+        /* Paint for rectangle drawn around object for debugging */
         paint = new Paint();
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.WHITE);
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
     }
@@ -76,6 +77,7 @@ public class PowerUp implements GameObject {
             }
             else {
                 this.x -= 7*SCALE;
+                powerUpHitBox.x -= 7*SCALE;
 
                 /* To simulate a bobbing motion, Velocity will be changed according to the current Velocity
                 . Velocity is increased if it needs to fall
@@ -101,6 +103,7 @@ public class PowerUp implements GameObject {
                 . The object falls if velocity is a positive value.
                 */
                 this.y += (int) distance;
+                powerUpHitBox.y += (int) distance;
 
             }
         }
@@ -119,15 +122,16 @@ public class PowerUp implements GameObject {
         }
     }
 
-    public void spawnPowUp(int xPos){
+    public void spawnPowUp(int xPos) {
         drawPowerUp = true;
 
-        this.x = xPos + SCREEN_WIDTH * 3/8;
+        this.x = xPos + SCREEN_WIDTH * 3 / 8;
+        powerUpHitBox.x = xPos + SCREEN_WIDTH * 3 / 8;
     }
 
     @Override
     public boolean offScreen(){
-        return true;
+        return false;
     }
 
     @Override

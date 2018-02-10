@@ -54,6 +54,7 @@ public class Game {
         powUpImage = Bitmap.createScaledBitmap(powUpImage, (int)(powUpImage.getWidth() * physicalScreenWidth/2.8312587 * 3/4),(int)(powUpImage.getHeight() * physicalScreenHeight/5.033349 *3/4),false);
         PowUp = new PowerUp(powUpImage,(SCREEN_WIDTH + 500),(SCREEN_HEIGHT*3/4),SCREEN_WIDTH,SCREEN_HEIGHT);
         this.objects.add(PowUp);
+
     }
 
     public void updateGameState(){
@@ -64,7 +65,7 @@ public class Game {
         pipes.get(1).update(pipes.get(0).getX());
         for (Pipe p: pipes){
             if (p.offScreen()){
-                if ((level%3 == 0) && (level != 0)){
+                if ((level%10 == 0) && (level != 0)){
                     PowUp.spawnPowUp(p.getX());
                 }
             }
@@ -75,18 +76,17 @@ public class Game {
 
     public void drawObjects(Canvas canvas) {
 
-        for (Pipe object : pipes){
+        for (GameObject object : objects){
             object.draw(canvas);
         }
         fish.draw(canvas);
-        PowUp.draw(canvas);
     }
 
     public void checkCollisions(){
 
         for (GameObject object : objects){
             if (!object.offScreen()){
-                fish.checkCollision(object, false);
+                fish.checkCollision(object, object.isPowerUp());
             }
         }
 
@@ -94,13 +94,10 @@ public class Game {
 
     public void updateLevel(){
 
-        /* FIX THIS */
-        /* Minor bug where first level is counted before fish intersects the first true hit box */
         for (Pipe pipe : pipes){
             if (!pipe.offScreen()){
                 if (pipe.getPassRect().firstIntersect()) {
-                    /* Temporary changes to test scoring system*/
-                    if (fish.getFishHitBox().getX() > (pipe.getPassRect().getX()  + fish.getSpriteWidth())) {
+                    if (fish.getFishHitBox().intersects(pipe.getPassRect())) {
                         pipe.getPassRect().setFirstIntersect(false);
                         level++;
                     }
