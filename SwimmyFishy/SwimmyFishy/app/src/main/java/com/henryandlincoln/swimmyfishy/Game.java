@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 
 import java.util.ArrayList;
 
-import static com.henryandlincoln.swimmyfishy.Fish.STATE.DEAD;
+import static com.henryandlincoln.swimmyfishy.Fish.STATE.*;
 
 public class Game {
 
@@ -17,7 +17,7 @@ public class Game {
     /* Variables relating to game objects */
     private int characterType;
     private Fish fish;
-    private PowerUp PowUp;
+    private PowerUp powUp;
     private ArrayList<Pipe> pipes;
     private ArrayList<GameObject> objects;
     private int level;
@@ -45,29 +45,31 @@ public class Game {
         pipeBitMap = Bitmap.createScaledBitmap(pipeBitMap, SCREEN_WIDTH*5/12,SCREEN_HEIGHT,false);
         for (int i =0 ;i <2;i++){
             Pipe p  = new Pipe(pipeBitMap,i*SCREEN_WIDTH*3/4,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-
             p.setFishWidth(fishWidth);
             this.objects.add(p);
             pipes.add(p);
         }
+
         /* Create the Power Up */
         Bitmap powUpImage = BitmapFactory.decodeResource(context.getResources(),R.drawable.power_up);
         powUpImage = Bitmap.createScaledBitmap(powUpImage, (int)(powUpImage.getWidth() * physicalScreenWidth/2.8312587 * 3/4),(int)(powUpImage.getHeight() * physicalScreenHeight/5.033349 *3/4),false);
-        PowUp = new PowerUp(powUpImage,(SCREEN_WIDTH + 500),(SCREEN_HEIGHT*3/4),SCREEN_WIDTH,SCREEN_HEIGHT);
-        this.objects.add(PowUp);
+        powUp = new PowerUp(powUpImage,(SCREEN_WIDTH + 500),(SCREEN_HEIGHT*3/4),SCREEN_WIDTH,SCREEN_HEIGHT);
+        this.objects.add(powUp);
 
     }
 
     public void updateGameState(){
 
         fish.update();
-        PowUp.update();
+        powUp.update();
+
         pipes.get(0).update(pipes.get(1).getX()-10);
         pipes.get(1).update(pipes.get(0).getX());
+
         for (Pipe p: pipes){
             if (p.offScreen()){
-                if ((level%10 == 0) && (level != 0)){
-                    PowUp.spawnPowUp(p.getX());
+                if ((level%2 == 0) && (level != 0)){
+                    powUp.spawnPowUp(p.getX());
                 }
             }
         }
@@ -167,8 +169,5 @@ public class Game {
 
     }
 
-    public void reset(){
-
-    }
 
 }

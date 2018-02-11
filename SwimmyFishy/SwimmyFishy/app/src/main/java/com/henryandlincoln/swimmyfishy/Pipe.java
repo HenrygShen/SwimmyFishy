@@ -61,11 +61,12 @@ public class Pipe implements GameObject {
         downRect = new Rectangle();
         passRect  = new Rectangle();
 
+        /* Add the rectangles(hit-boxes) to an array-list to pass to Fish class for collision checking */
         hitBoxes = new ArrayList<>(2);
         hitBoxes.add(upRect);
         hitBoxes.add(downRect);
-        //hitBoxes.add(passRect);
 
+        /* Set up the constant hit-box parameters */
         upRect.width = spriteWidth;
         upRect.height = spriteHeight;
         downRect.width = spriteWidth;
@@ -73,7 +74,6 @@ public class Pipe implements GameObject {
         passRect.width = spriteWidth;
         passRect.y = 0;
         passRect.height = SCREEN_HEIGHT;
-
 
         /* The pipe moving in the x axis will have its speed adjusted according to the screen width */
         this.SCALE = SCREEN_WIDTH/1080.f;
@@ -102,8 +102,10 @@ public class Pipe implements GameObject {
         /* Pipe moves at a velocity that is relative to the screen width */
         this.x -= 7*SCALE;
 
-        /* Sets up the pipe to be drawn with random heights */
+
         if (drawPipe) {
+            /* Sets up the pipe to be drawn with random heights */
+            /* Pipe limits(y position) will only be computed once every time before the pipe enters the screen */
             if (initialDraw){
                 upPipeY = rand.nextInt(UP_LIMIT) + DOWN_LIMIT;
                 downPipeY = (int)(upPipeY -  spriteHeight* 1.2);
@@ -113,9 +115,17 @@ public class Pipe implements GameObject {
 
         /* Resets the pipe to be drawn starting off screen on the right side */
         if (this.x <= - spriteWidth){
-            this.x = xPos + SCREEN_WIDTH * 3/4;
+
+            /* Variable is only set once to true, and never set false again */
             drawPipe = true;
+
+            /* xPos is the x position of the previous pipe pair.
+            The pipe pairs are always a certain distance away from each other  */
+            this.x = xPos + SCREEN_WIDTH * 3/4;
+
+            /* Once pipe leaves the screen, we may compute different limits again */
             initialDraw = true;
+
             upRect.setFirstIntersect(true);
             downRect.setFirstIntersect(true);
             passRect.setFirstIntersect(true);

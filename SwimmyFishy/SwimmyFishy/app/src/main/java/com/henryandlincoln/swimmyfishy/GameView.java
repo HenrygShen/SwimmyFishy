@@ -2,8 +2,6 @@ package com.henryandlincoln.swimmyfishy;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -47,10 +45,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         /* Set this variable to stall game thread and only start after the first touch */
         firstTouch = true;
 
+        /* Temporary real time score counter */
         textPaint = new Paint();
         textPaint.setColor(Color.RED);
         textPaint.setStyle(Paint.Style.FILL);
-
         textPaint.setTextSize(100);
 
 
@@ -63,22 +61,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             game.updateGameState();
         }
         else {
-
-            /* Configure the new score and set high score if previous one was beaten
-               Load these scores into settings for the game over panel to display */
-            int currentScore = game.getScore();
-            int bestScore = game.getPrevHighScore();
-            if (bestScore < currentScore) {
-                game.setHighScore(currentScore);
-            }
-            game.setCurrentScore(currentScore);
-            game.setDisplayNewHighScore(bestScore<currentScore);
-            ((GameActivity)(this.getContext())).gameOver();
-
+            this.endGame();
         }
 
     }
 
+
+    public void endGame(){
+
+        /* Configure the new score and set high score if previous one was beaten
+        Load these scores into settings for the game over panel to display */
+
+        int currentScore = game.getScore();
+        int bestScore = game.getPrevHighScore();
+        if (bestScore < currentScore) {
+            game.setHighScore(currentScore);
+        }
+        game.setCurrentScore(currentScore);
+        game.setDisplayNewHighScore(bestScore<currentScore);
+        ((GameActivity)(this.getContext())).gameOver();
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -105,9 +107,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         canvas.drawPaint(paint);
+
         game.drawObjects(canvas);
-        canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
         game.checkCollisions();
+
+        canvas.drawBitmap(bg_base,0,SCREEN_HEIGHT*5/6,null);
         canvas.drawText("" + game.getScore(), 100, 100, textPaint);
 
     }
@@ -170,16 +174,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void restartThread(){
 
-        /* Make it so that this view can handle events */
-        this.setFocusable(true);
-        this.getHolder().addCallback(this);
-
         /* Create thread to manage updates and drawing to the canvas */
         this.gameThread = new GameThread(this,this.getHolder());
-
-        /* Set up the resolution values */
-        this.SCREEN_HEIGHT = this.getHeight();
-        this.SCREEN_WIDTH = this.getWidth();
 
         float aspectRatio = (float)SCREEN_HEIGHT / SCREEN_WIDTH;
         DisplayMetrics dm = new DisplayMetrics();
@@ -202,9 +198,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    public Game getGame(){
-        return this.game;
-    }
 
     public void stopThread(){
 
